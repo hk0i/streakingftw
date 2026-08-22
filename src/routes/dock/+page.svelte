@@ -54,6 +54,7 @@
 		box-sizing: border-box;
 		padding: 1rem;
 		font-family: sans-serif;
+		background: #12161c;
 	}
 
 	.tally {
@@ -61,7 +62,7 @@
 		justify-content: space-around;
 		font-size: 1.5rem;
 		font-weight: 600;
-		color: #232b36;
+		color: #f2f8ff;
 	}
 
 	.actions {
@@ -101,9 +102,9 @@
 		min-height: 48px;
 		font-size: 1rem;
 		border-radius: 0.5rem;
-		border: 1px solid #7590b2;
-		background: #ffffff;
-		color: #232b36;
+		border: 1px solid #546880;
+		background: #232b36;
+		color: #f2f8ff;
 	}
 
 	.controls button:disabled {
