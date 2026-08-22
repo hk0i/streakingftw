@@ -10,8 +10,16 @@ A win/loss/tie tally tracker for stream overlays. It plugs into OBS in two place
 One is a **Browser Source**, the other is a **Custom Dock**. They sync via the browser's local storage, so you have to use the same browser profile for both.
 
 - [**Documentation**](https://hk0i.github.io/streakingftw/)
+
+## Live Demo
+
+You can try it out here before you set it up in OBS to see if you like it:
+
 - [**Live demo — Dock**](https://hk0i.github.io/streakingftw/dock) (<https://hk0i.github.io/streakingftw/dock>)
 - [**Live demo — Overlay:**](https://hk0i.github.io/streakingftw/overlay) <https://hk0i.github.io/streakingftw/overlay>
+
+The same links are used as your OBS **Custom Dock** and **Browser Source**.
+Read [Setup](#setup) for more details.
 
 ## Setup
 
