@@ -20,42 +20,48 @@
 		transparent overlay OBS reads — they stay in sync automatically.
 	</p>
 
-	<h2>1. Open the dock</h2>
+	<h2>1. Add the dock to OBS</h2>
 	<p>
-		<a href={dockUrl}>{dockUrl}</a> is the control panel — Win, Loss, Tie, Undo, New Session. Open
-		it on whatever device you'll use to log results, and keep that tab open.
+		In OBS, add a <strong>Browser Source</strong> set to <a href={dockUrl}>{dockUrl}</a> —
+		right-click the link and "Copy Link" to grab it. This is the control panel: Win, Loss, Tie,
+		Undo, New Session.
+	</p>
+	<p>
+		You won't see it update from the scene view — right-click the source and choose
+		<strong>Interact</strong> to open a window where you can actually click its buttons.
 	</p>
 
 	<h2>2. Add the overlay to OBS</h2>
-	<ol>
-		<li>In OBS, add a <strong>Browser Source</strong>.</li>
-		<li>
-			Set the URL to <a href={overlayUrl}>{overlayUrl}</a> — right-click either link above and
-			"Copy Link" to grab it. It must be on the <strong>same origin</strong> as the dock tab:
-			syncing happens via the browser's local storage, which is per-origin, so a dock and overlay
-			pointed at different origins (or one on desktop, one on a phone) won't see each other's
-			updates.
-		</li>
-		<li>Click a result on the dock — the overlay text should update within the OBS preview.</li>
-	</ol>
-
-	<h2>3. Sizing the overlay in OBS</h2>
 	<p>
-		OBS Browser Sources default to an 800×600 canvas, which is much bigger than one line of tally
-		text — that's the empty space around the edges. To fix it:
+		Add a second <strong>Browser Source</strong> set to <a href={overlayUrl}>{overlayUrl}</a>,
+		placed in your scene wherever you want the tally shown to viewers.
 	</p>
-	<ul>
-		<li>
-			Right-click the source → <strong>Properties</strong>, and set <strong>Width</strong> and
-			<strong>Height</strong> there to something closer to the content, e.g. <code>600×150</code>
-			for a single line.
-		</li>
-		<li>
-			Don't resize using the on-canvas drag handles — that stretches the already-rendered image
-			and looks blurry. The overlay's font size is set in viewport units, so it re-renders crisp
-			at whatever Width/Height you set in Properties.
-		</li>
-	</ul>
+	<p>
+		Both sources must be on the <strong>same origin</strong> — syncing happens via the browser's
+		local storage, which is per-origin. Browser Sources in the same OBS install share that
+		storage automatically, so as long as both URLs match (same domain, same base path), the dock
+		and overlay will stay in sync.
+	</p>
+	<p>
+		To size the overlay: OBS Browser Sources default to an 800×600 canvas, much bigger than one
+		line of tally text — that's the empty space around the edges. Right-click the source →
+		<strong>Properties</strong>, and set <strong>Width</strong> and <strong>Height</strong> there
+		to something closer to the content, e.g. <code>600×150</code> for a single line. Don't resize
+		using the on-canvas drag handles instead — that stretches the already-rendered image and looks
+		blurry, whereas the overlay's font size is set in viewport units and re-renders crisp at
+		whatever Width/Height you set in Properties.
+	</p>
+
+	<h2>3. Track wins, losses, and ties</h2>
+	<p>
+		Open the dock's <strong>Interact</strong> window whenever you want to log a result, undo the
+		last one, or start a new session. The overlay updates instantly since it's reading the same
+		local storage session.
+	</p>
+	<p>
+		You can also open the dock URL in a regular browser tab instead of using Interact — just make
+		sure it's the exact same URL as the overlay source.
+	</p>
 </div>
 </div>
 
@@ -85,20 +91,6 @@
 
 	p {
 		margin: 0 0 1rem;
-	}
-
-	ol,
-	ul {
-		margin: 0;
-		padding-left: 1.25rem;
-	}
-
-	li {
-		margin-bottom: 0.75rem;
-	}
-
-	li:last-child {
-		margin-bottom: 0;
 	}
 
 	a {
