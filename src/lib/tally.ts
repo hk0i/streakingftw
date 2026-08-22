@@ -19,7 +19,7 @@ export interface Tally {
 	total: number;
 }
 
-const STORAGE_KEY = 'wintracker:session';
+export const STORAGE_KEY = 'wintracker:session';
 const CURRENT_VERSION = 1;
 const DEFAULT_TEMPLATE = '{wins}W {losses}L {ties}T';
 
