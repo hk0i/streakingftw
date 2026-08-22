@@ -1,5 +1,7 @@
 # Win Tracker — User Manual
 
+**Date:** 2026-08-21
+
 ## What you need
 
 - OBS Studio.
