@@ -30,7 +30,8 @@ Once both are added, clicking a button in the Dock updates the Overlay instantly
 
 - **Win / Loss / Tie** — click to record a result; the tally updates immediately.
 - **Undo** — remove the most recently recorded result.
-- **Reset** — clear the current session's tally back to zero.
+- **New Session** — closes out the current session and starts a fresh one: clears the tally
+  back to zero and records a new start time.
 - Your tally is saved to your browser's local storage, so it survives closing and reopening
   OBS. It is **not** sent anywhere or synced across machines.
 - To fully clear saved data, use Reset, or clear OBS's browser cache for the Dock/Overlay
