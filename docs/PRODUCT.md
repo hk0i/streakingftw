@@ -1,0 +1,84 @@
+# Win Tracker — Product Document
+
+## Problem
+
+Streamers who want to show a live Win/Loss/Tie record (or per-role stats, like Overwatch's
+Tank/DPS/Support) on stream have no lightweight, install-free way to do it in OBS. Existing
+options either require a hosted account/backend, are tied to a specific game, or don't offer
+a simple control surface (a "dock") separate from what viewers see (an "overlay").
+
+## Goals
+
+- **Zero-install**: a streamer only needs a URL to paste into OBS — no downloads, no build step.
+- **Zero-backend**: all state lives in the browser's `localStorage`. Nothing is sent anywhere.
+- **Generic-first**: works for any game out of the box with just Win/Loss/Tie.
+- **Optional per-game enrichment**: role/profile tracking and bundled icon packs for specific
+  games, layered on top of the generic core.
+- **Real-time sync**: the Dock (control panel) and Overlay (viewer-facing display) reflect the
+  same tally instantly, with no manual refresh.
+
+## Non-goals (for now)
+
+- Cloud sync or multi-device support.
+- Accounts or authentication.
+- Historical analytics across past sessions.
+- Editing tallies from the Overlay (the Overlay is read-only/display-only).
+
+## Users
+
+- **The streamer** — uses the Dock to record results and configure the Overlay's appearance.
+- **The viewer** — sees only the Overlay, embedded as an OBS Browser Source in the scene.
+
+## Core concepts
+
+- **Session** — a running tally of Win/Loss/Tie counts. Resets manually via a button, or by
+  starting a fresh session.
+- **Profile** — an optional named bucket (e.g. "Tank") with its own W/L/T tally and an icon.
+  Generic mode is simply the implicit "no profile" case.
+- **Icon pack** — a bundle of profile/role icons and rank icons for a specific game.
+- **Output template** — a user-editable string on the Overlay, e.g. `"{wins}W {losses}L {ties}T"`,
+  rendered live from the current tally. Tokens use single curly braces with lowercase
+  snake_case names — `{wins}`, `{losses}`, `{ties}`, `{total}` in Phase 1. An unrecognized
+  `{token}` passes through unchanged rather than erroring, so a typo never breaks the overlay.
+  Phase 2 adds profile-scoped tokens (e.g. `{profile_wins}`, `{profile_name}`) without changing
+  the syntax.
+
+## Phased scope
+
+### Phase 1 — Generic tracker
+
+- Dock with Win / Loss / Tie buttons, reset, and undo.
+- Overlay renders a customizable token template (`{wins}` / `{losses}` / `{ties}` / `{total}`),
+  default `"{wins}W {losses}L {ties}T"`.
+- Tally persists in `localStorage` across OBS restarts.
+- Dock and Overlay stay in sync live, via prerendered static routes at `/dock` and `/overlay`.
+
+### Phase 2 — Profiles
+
+- Define named profiles (e.g. "Tank", "DPS", "Support").
+- Switch the active profile from the Dock.
+- Per-profile W/L/T tallies, in addition to the session-wide total.
+- Custom icon upload per profile; the active profile's icon shows on the Overlay.
+
+### Phase 3 — Game icon packs
+
+- Bundled **Overwatch** pack: role icons (Tank/DPS/Support) + rank icons.
+- Bundled **CS2** pack: rank icons.
+- Selectable from a gallery in the Dock's settings.
+
+## Risks / open items
+
+- **Trademark risk**: Overwatch and CS2 icons are Blizzard/Valve assets. The decision was made
+  to bundle the official icons directly rather than use user-supplied or custom-drawn
+  alternatives. This should be called out explicitly in the repo (README/NOTICE disclaimer,
+  fan-made / non-affiliation statement) and revisited if the project grows in visibility.
+- **OBS localStorage partitioning**: the dock↔overlay sync design assumes OBS's embedded
+  browser (CEF) shares `localStorage` between a docked browser panel and a scene's browser
+  source for the same origin. This needs a smoke test early in Phase 1 implementation before
+  the rest of the sync mechanism is built on top of it.
+
+## Success criteria
+
+A streamer can add two OBS browser sources — the Dock and the Overlay — both pointing at the
+same GitHub Pages–hosted app, click Win / Loss / Tie in the Dock, and see the Overlay update
+instantly with no manual refresh.
