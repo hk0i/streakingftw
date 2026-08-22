@@ -10,6 +10,10 @@ A win/loss/tie tally tracker for stream overlays. It plugs into OBS in two place
 Both are pages served by this app and added to OBS as Browser Sources; they sync via the
 browser's local storage. The app's root page has full setup instructions once it's running.
 
+- **Documentation:** <https://hk0i.github.io/streakingftw/>
+- **Live demo — Dock:** <https://hk0i.github.io/streakingftw/dock>
+- **Live demo — Overlay:** <https://hk0i.github.io/streakingftw/overlay>
+
 ## Developing
 
 Install dependencies, then start the dev server:
