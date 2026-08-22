@@ -55,10 +55,14 @@ function saveSession(session: Session): void {
 export function deriveTally(results: Result[]): Tally {
 	const tally: Tally = { wins: 0, losses: 0, ties: 0, total: 0 };
 	for (const result of results) {
-		tally.total++;
 		if (result.type === 'win') tally.wins++;
 		else if (result.type === 'loss') tally.losses++;
 		else if (result.type === 'tie') tally.ties++;
+		else {
+			console.warn(`deriveTally: skipping result with unknown type "${result.type}"`, result);
+			continue;
+		}
+		tally.total++;
 	}
 	return tally;
 }
