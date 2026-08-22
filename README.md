@@ -1,37 +1,34 @@
-# sv
+# streakingftw
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+A win/loss/tie tally tracker for stream overlays. It plugs into OBS in two places:
 
-## Creating a project
+- **Dock** — a control panel with buttons (Win, Loss, Tie, Undo, New Session) for the streamer to
+  click.
+- **Overlay** — a transparent overlay that shows the current tally to viewers, updating instantly
+  when the dock is used.
 
-If you're seeing this, you've probably already done this step. Congrats!
-
-```sh
-# create a new project
-npx sv create my-app
-```
-
-To recreate this project with the same configuration:
-
-```sh
-# recreate this project
-npx sv@0.17.0 create --template minimal --types ts --install npm .
-```
+Both are pages served by this app and added to OBS as Browser Sources; they sync via the
+browser's local storage. The app's root page has full setup instructions once it's running.
 
 ## Developing
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+Install dependencies, then start the dev server:
 
 ```sh
+npm install
 npm run dev
 
 # or start the server and open the app in a new browser tab
 npm run dev -- --open
 ```
 
-## Building
+Type-check the project:
 
-To create a production version of your app:
+```sh
+npm run check
+```
+
+## Building
 
 ```sh
 npm run build
@@ -39,4 +36,7 @@ npm run build
 
 You can preview the production build with `npm run preview`.
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+This project is built with [`adapter-static`](https://svelte.dev/docs/kit/adapter-static) and
+deployed to GitHub Pages via the workflow in `.github/workflows/`, which builds and publishes the
+`build/` directory on every push to `master`. Because GitHub Pages serves project sites under
+`/<repo-name>/`, the base path is configured in `vite.config.ts`.
