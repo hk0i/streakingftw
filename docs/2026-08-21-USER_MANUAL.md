@@ -1,11 +1,11 @@
-# Win Tracker — User Manual
+# Streaking — User Manual
 
 **Date:** 2026-08-21
 
 ## What you need
 
 - OBS Studio.
-- The Win Tracker URL: `https://hk0i.github.io/wintracker/`.
+- The Streaking URL: `https://hk0i.github.io/wintracker/`.
 
 That's it — no install, no build step, no account.
 
