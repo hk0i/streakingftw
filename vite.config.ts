@@ -17,7 +17,9 @@ export default defineConfig({
 			adapter: adapter(),
 			paths: {
 				// GitHub Pages serves project pages under /<repo-name>/.
-				base: dev ? '' : '/wintracker'
+				// Repo is `streakingftw`, not `wintracker` — an existing Python project
+				// already owns the `wintracker` name.
+				base: dev ? '' : '/streakingftw'
 			}
 		})
 	]
