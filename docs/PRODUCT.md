@@ -52,6 +52,11 @@ a simple control surface (a "dock") separate from what viewers see (an "overlay"
   default `"{wins}W {losses}L {ties}T"`.
 - Tally persists in `localStorage` across OBS restarts.
 - Dock and Overlay stay in sync live, via prerendered static routes at `/dock` and `/overlay`.
+- **Dock UI is mobile-first**: built responsive from the start (narrow viewport first, then
+  scaled up), since OBS custom browser docks are commonly resized to narrow panels. The
+  Overlay uses a different approach — fluid scaling to an arbitrary pixel size/aspect ratio,
+  since it's sized however the streamer configures the Browser Source in their scene, not by
+  standard device breakpoints.
 
 ### Phase 2 — Profiles
 
