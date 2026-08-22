@@ -16,52 +16,50 @@
 <div class="page">
 	<h1>streakingftw</h1>
 	<p>
-		A win/loss/tie tally tracker for stream overlays. A control panel you click, and a
-		transparent overlay OBS reads — they stay in sync automatically.
+		StreakingFTW Win Tracker is a simple win/loss/tie tally tracker.<br>
+		StreakingFTW, or "Streaking" for short, plugs into your OBS in two places:
 	</p>
+	<ol>
+		<li>The <strong>Dock</strong> — A control panel with buttons to click (Win, Loss, Tie, Undo, New Session) for the streamer to interact with.</li>
+		<li>The <strong>Overlay</strong> — A transparent overlay that shows the current tally to viewers. It updates instantly when the dock is used.</li>
+	</ol>
 
-	<h2>1. Add the dock to OBS</h2>
-	<p>
-		In OBS, add a <strong>Browser Source</strong> set to <a href={dockUrl}>{dockUrl}</a> —
-		right-click the link and "Copy Link" to grab it. This is the control panel: Win, Loss, Tie,
-		Undo, New Session.
-	</p>
-	<p>
-		You won't see it update from the scene view — right-click the source and choose
-		<strong>Interact</strong> to open a window where you can actually click its buttons.
-	</p>
+	<h2>Setup</h2>
+	<ol>
+		<li>
+			In <strong>OBS Sources</strong>, add a <strong>Browser Source</strong>.
+			<ol>
+				<li>Set <strong>URL</strong> to <a href={dockUrl}>{dockUrl}</a><br>
+				<em>(right-click the link and "Copy Link" to grab it.)</em></li>
+			</ol>
+		</li>
+		<li>
+			Add a second <strong>Browser Source</strong>
+			<ol>
+				<li>Set <strong>URL</strong> to <a href={overlayUrl}>{overlayUrl}</a><br>
+				<em>(right-click the link and "Copy Link" to grab it.)</em></li>
+				<li>Place it in your scene wherever you want the tally shown to viewers.</li>
+			</ol>
+		</li>
+	</ol>
 
-	<h2>2. Add the overlay to OBS</h2>
 	<p>
-		Add a second <strong>Browser Source</strong> set to <a href={overlayUrl}>{overlayUrl}</a>,
-		placed in your scene wherever you want the tally shown to viewers.
-	</p>
-	<p>
-		Both sources must be on the <strong>same origin</strong> — syncing happens via the browser's
-		local storage, which is per-origin. Browser Sources in the same OBS install share that
-		storage automatically, so as long as both URLs match (same domain, same base path), the dock
-		and overlay will stay in sync.
-	</p>
-	<p>
+		<strong>Note:</strong>
 		To size the overlay: OBS Browser Sources default to an 800×600 canvas, much bigger than one
 		line of tally text — that's the empty space around the edges. Right-click the source →
 		<strong>Properties</strong>, and set <strong>Width</strong> and <strong>Height</strong> there
-		to something closer to the content, e.g. <code>600×150</code> for a single line. Don't resize
-		using the on-canvas drag handles instead — that stretches the already-rendered image and looks
-		blurry, whereas the overlay's font size is set in viewport units and re-renders crisp at
-		whatever Width/Height you set in Properties.
+		to something closer to the content, e.g. <code>600×150</code> for a single line. <strong>DO NOT</strong> resize
+		using the on-canvas drag handles instead — that stretches the already-rendered image and it will look
+		blurry.
 	</p>
 
 	<h2>3. Track wins, losses, and ties</h2>
 	<p>
-		Open the dock's <strong>Interact</strong> window whenever you want to log a result, undo the
+		Open the <strong>Dock Panel</strong> whenever you want to log a result, undo the
 		last one, or start a new session. The overlay updates instantly since it's reading the same
 		local storage session.
 	</p>
-	<p>
-		You can also open the dock URL in a regular browser tab instead of using Interact — just make
-		sure it's the exact same URL as the overlay source.
-	</p>
+	<p>Use the <strong>New Session</strong> button to start a fresh tally for your gaming session. This will keep a clear tally of the wins/losses/ties for the day/time you started playing</p>
 </div>
 </div>
 
