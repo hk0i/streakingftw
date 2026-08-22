@@ -38,7 +38,7 @@
 
 	.text {
 		font-family: sans-serif;
-		font-size: 10vh;
+		font-size: min(11vw, 70vh);
 		font-weight: 700;
 		color: #ffffff;
 		white-space: nowrap;
