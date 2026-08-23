@@ -19,3 +19,15 @@ export function render(template: string, tokens: Record<string, string | number>
 		name in tokens ? String(tokens[name]) : match
 	);
 }
+
+export interface TokenReference {
+	token: string;
+	meaning: string;
+}
+
+export const TOKEN_REFERENCE: TokenReference[] = [
+	{ token: '{wins}', meaning: 'Win count' },
+	{ token: '{losses}', meaning: 'Loss count' },
+	{ token: '{ties}', meaning: 'Tie count' },
+	{ token: '{total}', meaning: 'Total games (wins + losses + ties)' }
+];

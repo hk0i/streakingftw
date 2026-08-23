@@ -89,3 +89,10 @@ export function newSession(): Session {
 	saveSession(session);
 	return session;
 }
+
+export function setTemplate(template: string): Session {
+	const session = loadSession();
+	session.template = template;
+	saveSession(session);
+	return session;
+}

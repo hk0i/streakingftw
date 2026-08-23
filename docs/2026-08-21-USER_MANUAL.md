@@ -39,7 +39,10 @@ Once both are added, clicking a button in the Dock updates the Overlay instantly
 
 ## Customizing the Overlay text (Phase 1)
 
-The Overlay renders a template you control, using tokens in curly braces:
+The Overlay renders a template you control, using tokens in curly braces. Edit it from the
+**Overlay format** field in the Dock — changes save when you click away or press Enter, and
+the Overlay updates instantly. Click the **?** button next to the field for an in-app reference
+of the available tokens.
 
 | Token | Meaning |
 |---|---|

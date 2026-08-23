@@ -1,11 +1,35 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { loadSession, deriveTally, addResult, undo, newSession, type Tally } from '$lib/tally';
+	import {
+		loadSession,
+		deriveTally,
+		addResult,
+		undo,
+		newSession,
+		setTemplate,
+		type Tally
+	} from '$lib/tally';
+	import { toTokens, render } from '$lib/template';
+	import HelpOverlay from '$lib/components/HelpOverlay.svelte';
 
 	let tally = $state<Tally>({ wins: 0, losses: 0, ties: 0, total: 0 });
+	let templateDraft = $state('');
+	let showHelp = $state(false);
 
 	function refresh() {
-		tally = deriveTally(loadSession().results);
+		const session = loadSession();
+		tally = deriveTally(session.results);
+		templateDraft = session.template;
+	}
+
+	let preview = $derived(render(templateDraft, toTokens(tally)));
+
+	function commitTemplate() {
+		setTemplate(templateDraft);
+	}
+
+	function handleTemplateKeydown(event: KeyboardEvent) {
+		if (event.key === 'Enter') (event.target as HTMLInputElement).blur();
 	}
 
 	onMount(refresh);
@@ -43,7 +67,33 @@
 		<button onclick={handleUndo} disabled={tally.total === 0}>Undo</button>
 		<button onclick={handleNewSession}>New Session</button>
 	</div>
+
+	<div class="format">
+		<div class="format-row">
+			<label for="template">Overlay format</label>
+			<button
+				type="button"
+				class="help-btn"
+				aria-label="Template token help"
+				onclick={() => (showHelp = true)}
+			>
+				?
+			</button>
+		</div>
+		<input
+			id="template"
+			type="text"
+			bind:value={templateDraft}
+			onblur={commitTemplate}
+			onkeydown={handleTemplateKeydown}
+		/>
+		<span class="preview">{preview}</span>
+	</div>
 </main>
+
+{#if showHelp}
+	<HelpOverlay onclose={() => (showHelp = false)} />
+{/if}
 
 <style>
 	main {
@@ -109,6 +159,51 @@
 
 	.controls button:disabled {
 		opacity: 0.5;
+	}
+
+	.format {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+	.format-row {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.format label {
+		font-size: 0.875rem;
+		color: #f2f8ff;
+	}
+
+	.help-btn {
+		width: 1.5rem;
+		height: 1.5rem;
+		border-radius: 50%;
+		border: 1px solid #546880;
+		background: #232b36;
+		color: #f2f8ff;
+		font-size: 0.875rem;
+		line-height: 1;
+		cursor: pointer;
+		padding: 0;
+	}
+
+	.format input {
+		min-height: 44px;
+		padding: 0 0.75rem;
+		font-size: 1rem;
+		border-radius: 0.5rem;
+		border: 1px solid #546880;
+		background: #232b36;
+		color: #f2f8ff;
+	}
+
+	.format .preview {
+		font-size: 0.875rem;
+		color: #a9bcd0;
 	}
 
 	@media (min-width: 480px) {
