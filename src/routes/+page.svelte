@@ -1,6 +1,9 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { base } from '$app/paths';
+	import obsScreenshot from '$lib/assets/screenshots/obs-streaking-ftw.png?enhanced';
+	import addDockScreenshot from '$lib/assets/screenshots/add-obs-dock.png?enhanced';
+	import addSourceScreenshot from '$lib/assets/screenshots/add-obs-source.png?enhanced';
 
 	let origin = $state('');
 
@@ -15,6 +18,7 @@
 <div class="backdrop">
 <div class="page">
 	<h1>streakingftw</h1>
+	<enhanced:img src={obsScreenshot} alt="OBS scene running StreakingFTW, with the dock and overlay in place" />
 	<p>
 		StreakingFTW Win Tracker is a simple win/loss/tie tally tracker.<br>
 		StreakingFTW, or "Streaking" for short, plugs into your OBS in two places:
@@ -28,6 +32,7 @@
 	<ol>
 		<li>
 			In <strong>OBS Sources</strong>, add a <strong>Browser Source</strong>.
+			<enhanced:img src={addDockScreenshot} alt="Adding a Browser Source in OBS for the StreakingFTW dock" />
 			<ol>
 				<li>Set <strong>URL</strong> to <a href={dockUrl}>{dockUrl}</a><br>
 				<em>(right-click the link and "Copy Link" to grab it.)</em></li>
@@ -35,6 +40,7 @@
 		</li>
 		<li>
 			Add a second <strong>Browser Source</strong>
+			<enhanced:img src={addSourceScreenshot} alt="Adding a Browser Source in OBS for the StreakingFTW overlay" />
 			<ol>
 				<li>Set <strong>URL</strong> to <a href={overlayUrl}>{overlayUrl}</a><br>
 				<em>(right-click the link and "Copy Link" to grab it.)</em></li>
@@ -100,5 +106,18 @@
 		background: #232b36;
 		padding: 0.1em 0.4em;
 		border-radius: 0.25em;
+	}
+
+	.page :global(picture) {
+		display: block;
+		margin: 0.75rem 0 1rem;
+	}
+
+	.page :global(picture img) {
+		display: block;
+		width: 100%;
+		height: auto;
+		border-radius: 0.5rem;
+		border: 1px solid #232b36;
 	}
 </style>
