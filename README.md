@@ -24,9 +24,11 @@ Read [Setup](#setup) for more details.
 ## Setup
 
 1. In OBS Sources, add a **Custom Dock**
+    ![Screenshot: Adding a custom browser dock](add-obs-dock.png)
     1. Name it `StreakingFTW Dock` (or whatever you want to call it)
     2. Set the **URL** to: https://hk0i.github.io/streakingftw/dock
 2. Add a **Browser Source** to your **Scene** in OBS.
+    ![Screenshot: Adding a custom browser source to OBS Scene](add-obs-source.png)
     1. Set **URL** to: https://hk0i.github.io/streakingftw/dock
     2. Set its size:
         1. Set its **Width** to `600`
