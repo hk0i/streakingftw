@@ -1,8 +1,17 @@
+import { resolve } from '$app/paths';
+
 export type ResultType = 'win' | 'loss' | 'tie';
+
+export interface Profile {
+	id: string;
+	name: string;
+	template?: string; // undefined = use Session.template
+}
 
 export interface Result {
 	type: ResultType;
 	at: string;
+	profileId?: string; // undefined = generic/no-profile bucket
 }
 
 export interface Session {
@@ -10,6 +19,8 @@ export interface Session {
 	startedAt: string;
 	results: Result[];
 	template: string;
+	profiles: Profile[];
+	activeProfileId: string | null; // null = generic
 }
 
 export interface Tally {
@@ -20,7 +31,7 @@ export interface Tally {
 }
 
 export const STORAGE_KEY = 'wintracker:session';
-const CURRENT_VERSION = 1;
+const CURRENT_VERSION = 2;
 const DEFAULT_TEMPLATE = '{wins}W {losses}L {ties}T';
 
 function emptySession(): Session {
@@ -28,21 +39,24 @@ function emptySession(): Session {
 		version: CURRENT_VERSION,
 		startedAt: new Date().toISOString(),
 		results: [],
-		template: DEFAULT_TEMPLATE
+		template: DEFAULT_TEMPLATE,
+		profiles: [],
+		activeProfileId: null
 	};
 }
 
-// Phase 1 only ever writes version 1, so this is a no-op passthrough today.
-// A future schema bump adds a branch here rather than changing the read/write call sites.
-function migrate(raw: Session): Session {
-	return raw;
+function migrate(raw: any): Session {
+	if (raw.version === 1) {
+		return { ...raw, version: 2, profiles: [], activeProfileId: null };
+	}
+	return raw as Session;
 }
 
 export function loadSession(): Session {
 	const raw = localStorage.getItem(STORAGE_KEY);
 	if (!raw) return emptySession();
 	try {
-		return migrate(JSON.parse(raw) as Session);
+		return migrate(JSON.parse(raw));
 	} catch {
 		return emptySession();
 	}
@@ -72,7 +86,11 @@ export function addResult(type: ResultType): Session {
 	if (session.results.length === 0) {
 		session.startedAt = new Date().toISOString();
 	}
-	session.results.push({ type, at: new Date().toISOString() });
+	session.results.push({
+		type,
+		at: new Date().toISOString(),
+		profileId: session.activeProfileId ?? undefined
+	});
 	saveSession(session);
 	return session;
 }
@@ -85,7 +103,12 @@ export function undo(): Session {
 }
 
 export function newSession(): Session {
-	const session = emptySession();
+	const previous = loadSession();
+	const session: Session = {
+		...emptySession(),
+		profiles: previous.profiles,
+		activeProfileId: previous.activeProfileId
+	};
 	saveSession(session);
 	return session;
 }
@@ -95,4 +118,58 @@ export function setTemplate(template: string): Session {
 	session.template = template;
 	saveSession(session);
 	return session;
+}
+
+export function addProfile(name: string): Session {
+	const trimmed = name.trim();
+	const session = loadSession();
+	if (!trimmed) return session;
+	session.profiles.push({ id: crypto.randomUUID(), name: trimmed });
+	saveSession(session);
+	return session;
+}
+
+export function renameProfile(id: string, name: string): Session {
+	const trimmed = name.trim();
+	const session = loadSession();
+	if (!trimmed) return session;
+	const profile = session.profiles.find((p) => p.id === id);
+	if (!profile) return session;
+	profile.name = trimmed;
+	saveSession(session);
+	return session;
+}
+
+export function deleteProfile(id: string): Session {
+	const session = loadSession();
+	session.profiles = session.profiles.filter((p) => p.id !== id);
+	if (session.activeProfileId === id) {
+		session.activeProfileId = null;
+	}
+	saveSession(session);
+	return session;
+}
+
+export function setActiveProfile(id: string | null): Session {
+	const session = loadSession();
+	session.activeProfileId = id;
+	saveSession(session);
+	return session;
+}
+
+export function setProfileTemplateOverride(id: string, template: string | undefined): Session {
+	const session = loadSession();
+	const profile = session.profiles.find((p) => p.id === id);
+	if (!profile) return session;
+	profile.template = template;
+	saveSession(session);
+	return session;
+}
+
+export function buildOverlayUrl(profileIds: string[]): string {
+	const url = new URL(resolve('/overlay'), window.location.origin);
+	if (profileIds.length > 0) {
+		url.searchParams.set('profile', profileIds.join(','));
+	}
+	return url.toString();
 }

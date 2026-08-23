@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { base } from '$app/paths';
+	import { resolve } from '$app/paths';
 	import obsScreenshot from '$lib/assets/screenshots/obs-streaking-ftw.png?enhanced';
 	import addDockScreenshot from '$lib/assets/screenshots/add-obs-dock.png?enhanced';
 	import addSourceScreenshot from '$lib/assets/screenshots/add-obs-source.png?enhanced';
@@ -11,8 +11,8 @@
 		origin = window.location.origin;
 	});
 
-	const dockUrl = $derived(`${origin}${base}/dock`);
-	const overlayUrl = $derived(`${origin}${base}/overlay`);
+	const dockUrl = $derived(`${origin}${resolve('/dock')}`);
+	const overlayUrl = $derived(`${origin}${resolve('/overlay')}`);
 </script>
 
 <div class="backdrop">

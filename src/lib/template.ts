@@ -1,4 +1,4 @@
-import type { Tally } from './tally';
+import type { Profile, Tally } from './tally';
 
 /**
  * Presentation layer over Tally. Starts as a pass-through of the four Tally fields;
@@ -11,6 +11,13 @@ export function toTokens(tally: Tally): Record<string, string | number> {
 		losses: tally.losses,
 		ties: tally.ties,
 		total: tally.total
+	};
+}
+
+export function toProfileTokens(tally: Tally, profile: Profile): Record<string, string | number> {
+	return {
+		...toTokens(tally),
+		profile_name: profile.name
 	};
 }
 
@@ -29,5 +36,6 @@ export const TOKEN_REFERENCE: TokenReference[] = [
 	{ token: '{wins}', meaning: 'Win count' },
 	{ token: '{losses}', meaning: 'Loss count' },
 	{ token: '{ties}', meaning: 'Tie count' },
-	{ token: '{total}', meaning: 'Total games (wins + losses + ties)' }
+	{ token: '{total}', meaning: 'Total games (wins + losses + ties)' },
+	{ token: '{profile_name}', meaning: "Profile's name (only meaningful inside a profile's own template)" }
 ];

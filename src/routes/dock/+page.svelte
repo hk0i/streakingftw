@@ -7,19 +7,42 @@
 		undo,
 		newSession,
 		setTemplate,
-		type Tally
+		setActiveProfile,
+		type Tally,
+		type Profile,
+		type Result
 	} from '$lib/tally';
 	import { toTokens, render } from '$lib/template';
 	import HelpOverlay from '$lib/components/HelpOverlay.svelte';
+	import ProfileSettings from '$lib/components/ProfileSettings.svelte';
+	import CopyUrlButton from '$lib/components/CopyUrlButton.svelte';
 
 	let tally = $state<Tally>({ wins: 0, losses: 0, ties: 0, total: 0 });
 	let templateDraft = $state('');
 	let showHelp = $state(false);
+	let showProfileSettings = $state(false);
+	let profiles = $state<Profile[]>([]);
+	let results = $state<Result[]>([]);
+	let activeProfileId = $state<string | null>(null);
 
 	function refresh() {
 		const session = loadSession();
 		tally = deriveTally(session.results);
 		templateDraft = session.template;
+		profiles = session.profiles;
+		results = session.results;
+		activeProfileId = session.activeProfileId;
+	}
+
+	let profileTally = $derived(
+		activeProfileId
+			? deriveTally(results.filter((r) => r.profileId === activeProfileId))
+			: null
+	);
+
+	function handleSetActiveProfile(id: string | null) {
+		setActiveProfile(id);
+		refresh();
 	}
 
 	let preview = $derived(render(templateDraft, toTokens(tally)));
@@ -57,6 +80,49 @@
 		<span>{tally.ties}T</span>
 	</div>
 
+	<div class="switcher">
+		<button
+			type="button"
+			class="settings-btn"
+			aria-label="Profile settings"
+			onclick={() => (showProfileSettings = true)}
+		>
+			⚙
+		</button>
+		{#if profiles.length > 0}
+			<button
+				type="button"
+				class="chip"
+				class:active={activeProfileId === null}
+				onclick={() => handleSetActiveProfile(null)}
+			>
+				Generic
+			</button>
+			{#each profiles as profile (profile.id)}
+				<button
+					type="button"
+					class="chip"
+					class:active={activeProfileId === profile.id}
+					onclick={() => handleSetActiveProfile(profile.id)}
+				>
+					{profile.name}
+				</button>
+			{/each}
+		{/if}
+		<CopyUrlButton
+			profileIds={activeProfileId ? [activeProfileId] : []}
+			label="🔗 Copy URL"
+		/>
+	</div>
+
+	{#if profileTally}
+		<div class="tally profile-tally">
+			<span>{profileTally.wins}W</span>
+			<span>{profileTally.losses}L</span>
+			<span>{profileTally.ties}T</span>
+		</div>
+	{/if}
+
 	<div class="actions">
 		<button class="win" onclick={() => handleResult('win')}>Win</button>
 		<button class="loss" onclick={() => handleResult('loss')}>Loss</button>
@@ -89,10 +155,21 @@
 		/>
 		<span class="preview">{preview}</span>
 	</div>
+
 </main>
 
 {#if showHelp}
 	<HelpOverlay onclose={() => (showHelp = false)} />
+{/if}
+
+{#if showProfileSettings}
+	<ProfileSettings
+		{profiles}
+		template={templateDraft}
+		{activeProfileId}
+		onclose={() => (showProfileSettings = false)}
+		onchange={refresh}
+	/>
 {/if}
 
 <style>
@@ -113,6 +190,47 @@
 		font-size: 1.5rem;
 		font-weight: 600;
 		color: #f2f8ff;
+	}
+
+	.profile-tally {
+		font-size: 1.1rem;
+		color: #a9bcd0;
+	}
+
+	.switcher {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+	}
+
+	.chip {
+		min-height: 36px;
+		padding: 0 0.75rem;
+		font-size: 0.875rem;
+		font-weight: 600;
+		border-radius: 999px;
+		border: 1px solid #546880;
+		background: #232b36;
+		color: #f2f8ff;
+	}
+
+	.chip.active {
+		background: #fcaf3e;
+		border-color: #fcaf3e;
+		color: #12161c;
+	}
+
+	.settings-btn {
+		width: 36px;
+		height: 36px;
+		border-radius: 50%;
+		border: 1px solid #546880;
+		background: #232b36;
+		color: #f2f8ff;
+		font-size: 1rem;
+		line-height: 1;
+		cursor: pointer;
+		padding: 0;
 	}
 
 	.actions {
