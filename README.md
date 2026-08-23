@@ -1,5 +1,7 @@
 # streakingftw
 
+![Screenshot: OBS running StreakingFTW](obs-streaking-ftw.png)
+
 A win/loss/tie tally tracker for stream overlays. It plugs into OBS in two places:
 
 - The **Dock** — a control panel with buttons (Win, Loss, Tie, Undo, New Session) for the streamer to
