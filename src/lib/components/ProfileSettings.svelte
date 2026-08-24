@@ -4,9 +4,14 @@
 		renameProfile,
 		deleteProfile,
 		setProfileTemplateOverride,
+		setProfileIcons,
 		type Profile
 	} from '$lib/tally';
+	import { ICON_PACKS } from '$lib/icon-packs';
 	import CopyUrlButton from '$lib/components/CopyUrlButton.svelte';
+	import IconPackPicker from '$lib/components/IconPackPicker.svelte';
+
+	const iconPack = ICON_PACKS[0];
 
 	let {
 		profiles,
@@ -86,6 +91,15 @@
 
 	function handleProfileTemplateKeydown(event: KeyboardEvent) {
 		if (event.key === 'Enter') (event.target as HTMLInputElement).blur();
+	}
+
+	function handleIconsChange(profileId: string, patch: { roleId?: string; rankId?: string }) {
+		setProfileIcons(profileId, {
+			iconPackId: patch.roleId || patch.rankId ? iconPack.id : undefined,
+			roleId: patch.roleId,
+			rankId: patch.rankId
+		});
+		onchange();
 	}
 
 	function toggleSelected(id: string, checked: boolean) {
@@ -169,6 +183,15 @@
 							oninput={(e) => handleProfileTemplateInput(profile.id, e.currentTarget.value)}
 							onblur={() => commitProfileTemplate(profile.id)}
 							onkeydown={handleProfileTemplateKeydown}
+						/>
+					</div>
+					<div class="profile-icons-row">
+						<span class="checkbox-label">Badge</span>
+						<IconPackPicker
+							pack={iconPack}
+							roleId={profile.roleId}
+							rankId={profile.rankId}
+							onchange={(patch) => handleIconsChange(profile.id, patch)}
 						/>
 					</div>
 					<div class="url-row">
@@ -319,6 +342,13 @@
 	}
 
 	.profile-format-row {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		margin: -0.25rem 0 0.25rem;
+	}
+
+	.profile-icons-row {
 		display: flex;
 		align-items: center;
 		gap: 0.5rem;
