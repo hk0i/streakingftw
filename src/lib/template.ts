@@ -1,4 +1,5 @@
 import type { Profile, Tally } from './tally';
+import { resolveProfileIcons } from './icon-packs';
 
 /**
  * Presentation layer over Tally. Starts as a pass-through of the four Tally fields;
@@ -17,7 +18,8 @@ export function toTokens(tally: Tally): Record<string, string | number> {
 export function toProfileTokens(tally: Tally, profile: Profile): Record<string, string | number> {
 	return {
 		...toTokens(tally),
-		profile_name: profile.name
+		profile_name: profile.name,
+		rank: resolveProfileIcons(profile).rank?.label ?? ''
 	};
 }
 
@@ -37,5 +39,9 @@ export const TOKEN_REFERENCE: TokenReference[] = [
 	{ token: '{losses}', meaning: 'Loss count' },
 	{ token: '{ties}', meaning: 'Tie count' },
 	{ token: '{total}', meaning: 'Total games (wins + losses + ties)' },
-	{ token: '{profile_name}', meaning: "Profile's name (only meaningful inside a profile's own template)" }
+	{ token: '{profile_name}', meaning: "Profile's name (only meaningful inside a profile's own template)" },
+	{
+		token: '{rank}',
+		meaning: "Profile's selected rank badge label (e.g. \"Gold\"), empty if none selected"
+	}
 ];
