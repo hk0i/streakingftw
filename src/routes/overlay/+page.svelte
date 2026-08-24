@@ -24,6 +24,11 @@
 		const session = loadSession();
 		const genericRow = () =>
 			toRow(render(session.template, toTokens(deriveTally(session.results))));
+		const profileRow = (profile: Profile) => {
+			const tally = deriveTally(session.results.filter((r) => r.profileId === profile.id));
+			const text = render(profile.template ?? session.template, toProfileTokens(tally, profile));
+			return toRow(text, profile);
+		};
 
 		const param = page.url.searchParams.get('profile');
 		if (!param) {
@@ -41,9 +46,7 @@
 				if (id === 'generic') return genericRow();
 				const profile = session.profiles.find((p) => p.id === id);
 				if (!profile) return null;
-				const tally = deriveTally(session.results.filter((r) => r.profileId === profile.id));
-				const text = render(profile.template ?? session.template, toProfileTokens(tally, profile));
-				return toRow(text, profile);
+				return profileRow(profile);
 			})
 			.filter((row): row is OverlayRow => row !== null);
 	}
