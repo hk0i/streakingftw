@@ -113,10 +113,7 @@
 				</button>
 			{/each}
 		{/if}
-		<CopyUrlButton
-			profileIds={activeProfileId ? [activeProfileId] : []}
-			label="🔗 Copy URL"
-		/>
+		<CopyUrlButton profileIds={[]} label="🔗 Copy URL" />
 	</div>
 
 	{#if profileTally}
