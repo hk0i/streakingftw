@@ -78,3 +78,11 @@ This project is built with [`adapter-static`](https://svelte.dev/docs/kit/adapte
 deployed to GitHub Pages via the workflow in `.github/workflows/`, which builds and publishes the
 `build/` directory on every push to `master`. Because GitHub Pages serves project sites under
 `/<repo-name>/`, the base path is configured in `vite.config.ts`.
+
+## Icon packs & trademarks
+
+Optional icon packs (`src/lib/assets/icon-packs/`) bundle official artwork from the games they
+represent (e.g. Overwatch role and rank icons) so streamers can show a badge for the game they're
+playing. This project is a fan-made tool and is not affiliated with, endorsed by, or sponsored by
+Blizzard Entertainment, Valve, or any other game publisher. All game trademarks, logos, and icon
+artwork remain the property of their respective owners.
