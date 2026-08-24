@@ -61,11 +61,11 @@
 <main style={`--row-count: ${rows.length || 1}`}>
 	{#each rows as row, i (i)}
 		<div class="row">
-			{#if row.rankSrc}
-				<img class="badge rank" src={row.rankSrc} alt="" />
-			{/if}
 			{#if row.roleSrc}
 				<img class="badge role" src={row.roleSrc} alt="" />
+			{/if}
+			{#if row.rankSrc}
+				<img class="badge rank" src={row.rankSrc} alt="" />
 			{/if}
 			<div class="text">{row.text}</div>
 		</div>
