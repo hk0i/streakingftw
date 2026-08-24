@@ -13,6 +13,7 @@
 		type Result
 	} from '$lib/tally';
 	import { toTokens, render } from '$lib/template';
+	import { resolveProfileIcons } from '$lib/icon-packs';
 	import HelpOverlay from '$lib/components/HelpOverlay.svelte';
 	import ProfileSettings from '$lib/components/ProfileSettings.svelte';
 	import CopyUrlButton from '$lib/components/CopyUrlButton.svelte';
@@ -39,6 +40,9 @@
 			? deriveTally(results.filter((r) => r.profileId === activeProfileId))
 			: null
 	);
+
+	let activeProfile = $derived(profiles.find((p) => p.id === activeProfileId) ?? null);
+	let activeIcons = $derived(activeProfile ? resolveProfileIcons(activeProfile) : {});
 
 	function handleSetActiveProfile(id: string | null) {
 		setActiveProfile(id);
@@ -117,6 +121,16 @@
 
 	{#if profileTally}
 		<div class="tally profile-tally">
+			{#if activeIcons.role || activeIcons.rank}
+				<span class="badges">
+					{#if activeIcons.role}
+						<img class="badge role" src={activeIcons.role.src} alt={activeIcons.role.label} />
+					{/if}
+					{#if activeIcons.rank}
+						<img class="badge rank" src={activeIcons.rank.src} alt={activeIcons.rank.label} />
+					{/if}
+				</span>
+			{/if}
 			<span>{profileTally.wins}W</span>
 			<span>{profileTally.losses}L</span>
 			<span>{profileTally.ties}T</span>
@@ -195,6 +209,30 @@
 	.profile-tally {
 		font-size: 1.1rem;
 		color: #a9bcd0;
+	}
+
+	.badges {
+		display: flex;
+		gap: 0.3rem;
+	}
+
+	.badge {
+		width: 24px;
+		height: 24px;
+		padding: 0.2rem;
+		border-radius: 50%;
+		box-sizing: border-box;
+		object-fit: contain;
+	}
+
+	/* Role icons are solid black artwork, so they need a light chip to read
+	   against the dark dock background; rank badges are already full-color. */
+	.badge.role {
+		background: #e8edf2;
+	}
+
+	.badge.rank {
+		background: #232b36;
 	}
 
 	.switcher {
