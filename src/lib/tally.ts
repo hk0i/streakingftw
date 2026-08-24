@@ -2,14 +2,17 @@ import { resolve } from '$app/paths';
 
 export type ResultType = 'win' | 'loss' | 'tie';
 
-export interface Profile {
-	id: string;
-	name: string;
-	template?: string; // undefined = use Session.template
+export type ProfileIcons = {
 	iconPackId?: string; // e.g. "overwatch"
 	roleId?: string; // e.g. "tank" | "damage" | "support"
 	rankId?: string; // e.g. "gold"
-}
+};
+
+export type Profile = {
+	id: string;
+	name: string;
+	template?: string; // undefined = use Session.template
+} & ProfileIcons;
 
 export interface Result {
 	type: ResultType;
@@ -172,10 +175,7 @@ export function setProfileTemplateOverride(id: string, template: string | undefi
 	return session;
 }
 
-export function setProfileIcons(
-	id: string,
-	patch: { iconPackId?: string; roleId?: string; rankId?: string }
-): Session {
+export function setProfileIcons(id: string, patch: ProfileIcons): Session {
 	const session = loadSession();
 	const profile = session.profiles.find((p) => p.id === id);
 	if (!profile) return session;
