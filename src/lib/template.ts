@@ -11,7 +11,9 @@ export function toTokens(tally: Tally): Record<string, string | number> {
 		wins: tally.wins,
 		losses: tally.losses,
 		ties: tally.ties,
-		total: tally.total
+		total: tally.total,
+		profile_name: '',
+		rank: ''
 	};
 }
 
@@ -24,9 +26,9 @@ export function toProfileTokens(tally: Tally, profile: Profile): Record<string, 
 }
 
 export function render(template: string, tokens: Record<string, string | number>): string {
-	return template.replace(/\{(\w+)\}/g, (match, name: string) =>
-		name in tokens ? String(tokens[name]) : match
-	);
+	return template
+		.replace(/\{(\w+)\}/g, (match, name: string) => (name in tokens ? String(tokens[name]) : match))
+		.trim();
 }
 
 export interface TokenReference {
