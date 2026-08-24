@@ -1,16 +1,29 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
 	import { page } from '$app/state';
-	import { loadSession, deriveTally } from '$lib/tally';
+	import { loadSession, deriveTally, type Profile } from '$lib/tally';
 	import { onSessionChange } from '$lib/sync';
 	import { toTokens, toProfileTokens, render } from '$lib/template';
+	import { resolveProfileIcons } from '$lib/icon-packs';
 
-	let rows = $state<string[]>([]);
+	interface OverlayRow {
+		text: string;
+		roleSrc?: string;
+		rankSrc?: string;
+	}
+
+	let rows = $state<OverlayRow[]>([]);
 	let unsubscribe: () => void;
+
+	function toRow(text: string, profile?: Profile): OverlayRow {
+		const icons = profile ? resolveProfileIcons(profile) : {};
+		return { text, roleSrc: icons.role?.src, rankSrc: icons.rank?.src };
+	}
 
 	function refresh() {
 		const session = loadSession();
-		const genericRow = () => render(session.template, toTokens(deriveTally(session.results)));
+		const genericRow = () =>
+			toRow(render(session.template, toTokens(deriveTally(session.results))));
 
 		const param = page.url.searchParams.get('profile');
 		if (!param) {
@@ -29,9 +42,10 @@
 				const profile = session.profiles.find((p) => p.id === id);
 				if (!profile) return null;
 				const tally = deriveTally(session.results.filter((r) => r.profileId === profile.id));
-				return render(profile.template ?? session.template, toProfileTokens(tally, profile));
+				const text = render(profile.template ?? session.template, toProfileTokens(tally, profile));
+				return toRow(text, profile);
 			})
-			.filter((row): row is string => row !== null);
+			.filter((row): row is OverlayRow => row !== null);
 	}
 
 	onMount(() => {
@@ -46,7 +60,15 @@
 
 <main style={`--row-count: ${rows.length || 1}`}>
 	{#each rows as row, i (i)}
-		<div class="text">{row}</div>
+		<div class="row">
+			{#if row.roleSrc}
+				<img class="badge role" src={row.roleSrc} alt="" />
+			{/if}
+			{#if row.rankSrc}
+				<img class="badge rank" src={row.rankSrc} alt="" />
+			{/if}
+			<div class="text">{row.text}</div>
+		</div>
 	{/each}
 </main>
 
@@ -60,9 +82,35 @@
 		height: 100vh;
 	}
 
+	.row {
+		display: flex;
+		align-items: center;
+		gap: 0.3em;
+		font-size: min(11vw, calc(70vh / var(--row-count, 1)));
+	}
+
+	.badge {
+		width: 0.9em;
+		height: 0.9em;
+		padding: 0.08em;
+		border-radius: 50%;
+		box-sizing: border-box;
+		object-fit: contain;
+		flex-shrink: 0;
+	}
+
+	/* Role icons are solid black artwork, so they need a light chip to read
+	   against arbitrary OBS backgrounds; rank badges are already full-color. */
+	.badge.role {
+		background: #e8edf2;
+	}
+
+	.badge.rank {
+		background: rgba(0, 0, 0, 0.35);
+	}
+
 	.text {
 		font-family: sans-serif;
-		font-size: min(11vw, calc(70vh / var(--row-count, 1)));
 		font-weight: 700;
 		color: #ffffff;
 		white-space: nowrap;
