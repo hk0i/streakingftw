@@ -32,7 +32,8 @@
 
 		const param = page.url.searchParams.get('profile');
 		if (!param) {
-			rows = [genericRow()];
+			const active = session.profiles.find((p) => p.id === session.activeProfileId);
+			rows = [active ? profileRow(active) : genericRow()];
 			return;
 		}
 

@@ -143,7 +143,7 @@
 					/>
 					Generic
 				</label>
-				<CopyUrlButton profileIds={[]} />
+				<CopyUrlButton profileIds={['generic']} />
 			</div>
 			{#each profiles as profile (profile.id)}
 				<div
