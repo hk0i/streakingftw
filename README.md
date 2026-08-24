@@ -48,6 +48,21 @@ stretches the already-rendered image and it will look blurry.
 start a new session. The overlay updates instantly since it's reading the same local storage
 session. Use **New Session** to start a fresh tally for the day/time you started playing.
 
+## Using rank & role badges
+
+Profiles can show a game-specific badge next to their tally. Today there's one bundled pack —
+**Overwatch** (role icons and rank tier badges, Bronze through Champion).
+
+1. Open the Dock and click the gear icon to open **Profile settings**.
+2. Under a profile's **Badge** row, click a role icon and/or a rank badge to select it — click a
+   selected one again to clear it. Either can be set independently.
+3. The badge shows as a small preview next to that profile's tally in the Dock, and renders on
+   the Overlay next to that profile's text.
+4. To show the rank as text too, add `{rank}` to that profile's custom output format, e.g.
+   `{profile_name} ({rank}) {wins}W {losses}L {ties}T`.
+
+See [`docs/2026-08-24-EDD-PHASE3.md`](docs/2026-08-24-EDD-PHASE3.md) for the design behind this.
+
 ## Developing
 
 Install dependencies, then start the dev server:

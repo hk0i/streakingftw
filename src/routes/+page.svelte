@@ -66,6 +66,28 @@
 		local storage session.
 	</p>
 	<p>Use the <strong>New Session</strong> button to start a fresh tally for your gaming session. This will keep a clear tally of the wins/losses/ties for the day/time you started playing</p>
+
+	<h2>4. Add rank & role badges (optional)</h2>
+	<p>
+		If you're using <strong>profiles</strong> to track separate stats per role or game mode,
+		each profile can also show a game-specific badge. Today there's one bundled pack —
+		<strong>Overwatch</strong> (role icons and rank tier badges, Bronze through Champion).
+	</p>
+	<ol>
+		<li>Open the Dock and click the gear icon to open <strong>Profile settings</strong>.</li>
+		<li>
+			Under a profile's <strong>Badge</strong> row, click a role icon and/or a rank badge to
+			select it — click a selected one again to clear it.
+		</li>
+		<li>
+			The badge shows next to that profile's tally in the Dock, and on the Overlay next to
+			that profile's text.
+		</li>
+	</ol>
+	<p>
+		To show the rank as text too, add <code>{'{rank}'}</code> to that profile's custom output
+		format, e.g. <code>{'{profile_name} ({rank}) {wins}W {losses}L {ties}T'}</code>.
+	</p>
 </div>
 </div>
 
