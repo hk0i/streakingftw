@@ -50,6 +50,7 @@ of the available tokens.
 | `{losses}` | Loss count |
 | `{ties}` | Tie count |
 | `{total}` | Total games (wins + losses + ties) |
+| `{rank}` | A profile's selected rank badge label (e.g. "Gold"); empty if none is selected, or on the Generic row |
 
 Default template: `{wins}W {losses}L {ties}T`
 
@@ -68,10 +69,21 @@ Once shipped, you'll be able to:
 - Track a separate W/L/T tally per profile, alongside the session-wide total.
 - Assign a custom icon to each profile, shown on the Overlay.
 
-## Using Game Icon Packs (Phase 3 — coming soon)
+## Using Game Icon Packs (Phase 3)
 
-Once shipped, you'll be able to select a bundled icon pack (Overwatch role/rank icons, CS2
-rank icons) from a gallery in the Dock's settings, instead of uploading your own icons.
+Each profile can show an Overwatch role icon and rank badge, in addition to its name and tally:
+
+- Open **Profile settings** (the gear icon) and find the profile's **Badge** row.
+- Click a role icon (Tank/Damage/Support) and a rank badge (Bronze through Champion) to select
+  them — click a selected icon again to clear it. Either can be set independently; you don't
+  need both.
+- The selected badges show as a small preview next to the profile's tally in the Dock, and
+  render on the Overlay next to that profile's text.
+- Put `{rank}` in a profile's custom template to show the rank as text too, e.g.
+  `{profile_name} ({rank}) {wins}W {losses}L {ties}T`.
+
+Only an Overwatch pack is bundled today. A CS2 pack (rank icons only) is planned but not yet
+built.
 
 ## Troubleshooting
 

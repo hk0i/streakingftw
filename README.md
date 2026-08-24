@@ -48,6 +48,21 @@ stretches the already-rendered image and it will look blurry.
 start a new session. The overlay updates instantly since it's reading the same local storage
 session. Use **New Session** to start a fresh tally for the day/time you started playing.
 
+## Using rank & role badges
+
+Profiles can show a game-specific badge next to their tally. Today there's one bundled pack —
+**Overwatch** (role icons and rank tier badges, Bronze through Champion).
+
+1. Open the Dock and click the gear icon to open **Profile settings**.
+2. Under a profile's **Badge** row, click a role icon and/or a rank badge to select it — click a
+   selected one again to clear it. Either can be set independently.
+3. The badge shows as a small preview next to that profile's tally in the Dock, and renders on
+   the Overlay next to that profile's text.
+4. To show the rank as text too, add `{rank}` to that profile's custom output format, e.g.
+   `{profile_name} ({rank}) {wins}W {losses}L {ties}T`.
+
+See [`docs/2026-08-24-EDD-PHASE3.md`](docs/2026-08-24-EDD-PHASE3.md) for the design behind this.
+
 ## Developing
 
 Install dependencies, then start the dev server:
@@ -78,3 +93,11 @@ This project is built with [`adapter-static`](https://svelte.dev/docs/kit/adapte
 deployed to GitHub Pages via the workflow in `.github/workflows/`, which builds and publishes the
 `build/` directory on every push to `master`. Because GitHub Pages serves project sites under
 `/<repo-name>/`, the base path is configured in `vite.config.ts`.
+
+## Icon packs & trademarks
+
+Optional icon packs (`src/lib/assets/icon-packs/`) bundle official artwork from the games they
+represent (e.g. Overwatch role and rank icons) so streamers can show a badge for the game they're
+playing. This project is a fan-made tool and is not affiliated with, endorsed by, or sponsored by
+Blizzard Entertainment, Valve, or any other game publisher. All game trademarks, logos, and icon
+artwork remain the property of their respective owners.
