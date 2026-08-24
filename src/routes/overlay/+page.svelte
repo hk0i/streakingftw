@@ -61,11 +61,11 @@
 <main style={`--row-count: ${rows.length || 1}`}>
 	{#each rows as row, i (i)}
 		<div class="row">
-			{#if row.roleSrc}
-				<img class="badge role" src={row.roleSrc} alt="" />
-			{/if}
 			{#if row.rankSrc}
 				<img class="badge rank" src={row.rankSrc} alt="" />
+			{/if}
+			{#if row.roleSrc}
+				<img class="badge role" src={row.roleSrc} alt="" />
 			{/if}
 			<div class="text">{row.text}</div>
 		</div>
@@ -87,26 +87,21 @@
 		align-items: center;
 		gap: 0.3em;
 		font-size: min(11vw, calc(70vh / var(--row-count, 1)));
+		--badge-shadow: drop-shadow(0 0 4px rgba(0, 0, 0, 0.9)) drop-shadow(0 0 8px rgba(0, 0, 0, 0.6));
 	}
 
 	.badge {
-		width: 0.9em;
 		height: 0.9em;
-		padding: 0.08em;
-		border-radius: 50%;
-		box-sizing: border-box;
+		width: auto;
 		object-fit: contain;
 		flex-shrink: 0;
+		filter: var(--badge-shadow);
 	}
 
-	/* Role icons are solid black artwork, so they need a light chip to read
-	   against arbitrary OBS backgrounds; rank badges are already full-color. */
+	/* Role icons are solid black artwork; invert to white so they read as part
+	   of the overlay's text-like visual language instead of a dark cutout. */
 	.badge.role {
-		background: #e8edf2;
-	}
-
-	.badge.rank {
-		background: rgba(0, 0, 0, 0.35);
+		filter: invert(1) var(--badge-shadow);
 	}
 
 	.text {
