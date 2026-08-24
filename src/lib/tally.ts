@@ -6,6 +6,9 @@ export interface Profile {
 	id: string;
 	name: string;
 	template?: string; // undefined = use Session.template
+	iconPackId?: string; // e.g. "overwatch"
+	roleId?: string; // e.g. "tank" | "damage" | "support"
+	rankId?: string; // e.g. "gold"
 }
 
 export interface Result {
@@ -31,7 +34,7 @@ export interface Tally {
 }
 
 export const STORAGE_KEY = 'wintracker:session';
-const CURRENT_VERSION = 2;
+const CURRENT_VERSION = 3;
 const DEFAULT_TEMPLATE = '{wins}W {losses}L {ties}T';
 
 function emptySession(): Session {
@@ -48,6 +51,9 @@ function emptySession(): Session {
 function migrate(raw: any): Session {
 	if (raw.version === 1) {
 		return { ...raw, version: 2, profiles: [], activeProfileId: null };
+	}
+	if (raw.version === 2) {
+		return { ...raw, version: 3 };
 	}
 	return raw as Session;
 }
@@ -162,6 +168,20 @@ export function setProfileTemplateOverride(id: string, template: string | undefi
 	const profile = session.profiles.find((p) => p.id === id);
 	if (!profile) return session;
 	profile.template = template;
+	saveSession(session);
+	return session;
+}
+
+export function setProfileIcons(
+	id: string,
+	patch: { iconPackId?: string; roleId?: string; rankId?: string }
+): Session {
+	const session = loadSession();
+	const profile = session.profiles.find((p) => p.id === id);
+	if (!profile) return session;
+	profile.iconPackId = patch.iconPackId;
+	profile.roleId = patch.roleId;
+	profile.rankId = patch.rankId;
 	saveSession(session);
 	return session;
 }
