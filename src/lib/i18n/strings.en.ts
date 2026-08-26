@@ -1,3 +1,5 @@
+import type { TokenKey } from '../template';
+
 export type Dictionary<T> = { [K in keyof T]: T[K] extends string ? string : Dictionary<T[K]> };
 
 export const en = {
@@ -70,7 +72,15 @@ export const en = {
 		closeAriaLabel: 'Close',
 		tokenColumn: 'Token',
 		meaningColumn: 'Meaning',
-		hint: 'Unrecognized tokens are shown as-is, so typos are safe.'
+		hint: 'Unrecognized tokens are shown as-is, so typos are safe.',
+		tokenMeanings: {
+			wins: 'Win count',
+			losses: 'Loss count',
+			ties: 'Tie count',
+			total: 'Total games (wins + losses + ties)',
+			profile_name: "Profile's name (only meaningful inside a profile's own template)",
+			rank: 'Profile\'s selected rank badge label (e.g. "Gold"), empty if none selected'
+		} satisfies Record<TokenKey, string>
 	},
 	copyUrlButton: {
 		defaultLabel: 'Copy overlay URL',

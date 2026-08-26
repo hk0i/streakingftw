@@ -70,7 +70,15 @@ export const ja = {
 		closeAriaLabel: '閉じる',
 		tokenColumn: 'トークン',
 		meaningColumn: '意味',
-		hint: '認識されないトークンはそのまま表示されるため、入力ミスをしても問題ありません。'
+		hint: '認識されないトークンはそのまま表示されるため、入力ミスをしても問題ありません。',
+		tokenMeanings: {
+			wins: '勝ち数',
+			losses: '負け数',
+			ties: '引き分け数',
+			total: '合計試合数(勝ち + 負け + 引き分け)',
+			profile_name: 'プロフィール名(そのプロフィール自身のテンプレート内でのみ意味を持つ)',
+			rank: 'プロフィールで選択したランクバッジのラベル(例: 「Gold」)。未選択の場合は空'
+		}
 	},
 	copyUrlButton: {
 		defaultLabel: 'オーバーレイURLをコピー',

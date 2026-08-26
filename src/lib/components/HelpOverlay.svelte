@@ -35,7 +35,7 @@
 				{#each TOKEN_REFERENCE as ref (ref.token)}
 					<tr>
 						<td><code>{ref.token}</code></td>
-						<td>{ref.meaning}</td>
+						<td>{t.helpOverlay.tokenMeanings[ref.key]}</td>
 					</tr>
 				{/each}
 			</tbody>

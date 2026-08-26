@@ -31,19 +31,18 @@ export function render(template: string, tokens: Record<string, string | number>
 		.trim();
 }
 
+export type TokenKey = 'wins' | 'losses' | 'ties' | 'total' | 'profile_name' | 'rank';
+
 export interface TokenReference {
 	token: string;
-	meaning: string;
+	key: TokenKey;
 }
 
 export const TOKEN_REFERENCE: TokenReference[] = [
-	{ token: '{wins}', meaning: 'Win count' },
-	{ token: '{losses}', meaning: 'Loss count' },
-	{ token: '{ties}', meaning: 'Tie count' },
-	{ token: '{total}', meaning: 'Total games (wins + losses + ties)' },
-	{ token: '{profile_name}', meaning: "Profile's name (only meaningful inside a profile's own template)" },
-	{
-		token: '{rank}',
-		meaning: "Profile's selected rank badge label (e.g. \"Gold\"), empty if none selected"
-	}
+	{ token: '{wins}', key: 'wins' },
+	{ token: '{losses}', key: 'losses' },
+	{ token: '{ties}', key: 'ties' },
+	{ token: '{total}', key: 'total' },
+	{ token: '{profile_name}', key: 'profile_name' },
+	{ token: '{rank}', key: 'rank' }
 ];
