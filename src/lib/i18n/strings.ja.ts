@@ -70,7 +70,7 @@ export const ja = {
 		closeAriaLabel: '閉じる',
 		tokenColumn: 'トークン',
 		meaningColumn: '意味',
-		hint: '認識されないトークンはそのまま表示されるため、入力ミスをしても問題ありません。',
+		hint: '認識されないトークンはそのまま表示されます。',
 		tokenMeanings: {
 			wins: '勝ち数',
 			losses: '負け数',

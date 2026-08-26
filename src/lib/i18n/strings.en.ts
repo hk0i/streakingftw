@@ -72,7 +72,7 @@ export const en = {
 		closeAriaLabel: 'Close',
 		tokenColumn: 'Token',
 		meaningColumn: 'Meaning',
-		hint: 'Unrecognized tokens are shown as-is, so typos are safe.',
+		hint: 'Unrecognized tokens are shown as-is.',
 		tokenMeanings: {
 			wins: 'Win count',
 			losses: 'Loss count',
