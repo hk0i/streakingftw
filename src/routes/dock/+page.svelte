@@ -86,9 +86,18 @@
 				{/if}
 			</span>
 		{/if}
-		<span>{displayTally.wins}W</span>
-		<span>{displayTally.losses}L</span>
-		<span>{displayTally.ties}T</span>
+		<span class="stat">
+			<span class="stat-value">{displayTally.wins}W</span>
+			{#if profileTally}<span class="stat-total">/{tally.wins}</span>{/if}
+		</span>
+		<span class="stat">
+			<span class="stat-value">{displayTally.losses}L</span>
+			{#if profileTally}<span class="stat-total">/{tally.losses}</span>{/if}
+		</span>
+		<span class="stat">
+			<span class="stat-value">{displayTally.ties}T</span>
+			{#if profileTally}<span class="stat-total">/{tally.ties}</span>{/if}
+		</span>
 	</div>
 
 	<div class="switcher">
@@ -153,10 +162,27 @@
 
 	.tally {
 		display: flex;
+		align-items: center;
 		justify-content: space-around;
+		color: #f2f8ff;
+	}
+
+	.stat {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		line-height: 1.1;
+	}
+
+	.stat-value {
 		font-size: 1.5rem;
 		font-weight: 600;
-		color: #f2f8ff;
+	}
+
+	.stat-total {
+		font-size: 0.75rem;
+		font-weight: 500;
+		color: #a9bcd0;
 	}
 
 	.badges {
