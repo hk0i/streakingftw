@@ -288,19 +288,21 @@
 		font-weight: 600;
 		border: none;
 		border-radius: 0.5rem;
-		color: #ffffff;
 	}
 
 	.win {
-		background: #48830e;
+		background: #73d216;
+		color: #12161c;
 	}
 
 	.loss {
 		background: #cc0000;
+		color: #ffffff;
 	}
 
 	.tie {
-		background: #b95b00;
+		background: #f57900;
+		color: #12161c;
 	}
 
 	.controls {
