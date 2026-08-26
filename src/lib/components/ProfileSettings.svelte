@@ -9,11 +9,12 @@
 		type Profile,
 		type Tally
 	} from '$lib/tally';
-	import { toTokens, render, TOKEN_REFERENCE } from '$lib/template';
+	import { toTokens, render } from '$lib/template';
 	import { ICON_PACKS } from '$lib/icon-packs';
 	import CopyUrlButton from '$lib/components/CopyUrlButton.svelte';
 	import IconPackPicker from '$lib/components/IconPackPicker.svelte';
 	import LanguageToggle from '$lib/components/LanguageToggle.svelte';
+	import HelpOverlay from '$lib/components/HelpOverlay.svelte';
 	import { getT } from '$lib/i18n/locale.svelte';
 
 	let t = $derived(getT());
@@ -154,40 +155,9 @@
 <div class="backdrop" onclick={handleBackdropClick}>
 	<div class="panel" role="dialog" aria-modal="true" aria-label={t.profileSettings.heading}>
 		<div class="header">
-			<div class="header-title">
-				{#if showHelp}
-					<button
-						type="button"
-						class="back"
-						onclick={() => (showHelp = false)}
-						aria-label={t.helpOverlay.closeAriaLabel}
-					>
-						←
-					</button>
-				{/if}
-				<h2>{showHelp ? t.helpOverlay.heading : t.profileSettings.heading}</h2>
-			</div>
+			<h2>{t.profileSettings.heading}</h2>
 			<button type="button" class="close" onclick={onclose} aria-label={t.profileSettings.closeAriaLabel}>×</button>
 		</div>
-		{#if showHelp}
-			<table>
-				<thead>
-					<tr>
-						<th>{t.helpOverlay.tokenColumn}</th>
-						<th>{t.helpOverlay.meaningColumn}</th>
-					</tr>
-				</thead>
-				<tbody>
-					{#each TOKEN_REFERENCE as ref (ref.token)}
-						<tr>
-							<td><code>{ref.token}</code></td>
-							<td>{t.helpOverlay.tokenMeanings[ref.key]}</td>
-						</tr>
-					{/each}
-				</tbody>
-			</table>
-			<p class="help-hint">{t.helpOverlay.hint}</p>
-		{:else}
 		<div class="toolbar">
 			<CopyUrlButton profileIds={[]} label={t.dock.copyUrl} />
 			<LanguageToggle />
@@ -314,9 +284,12 @@
 				<button type="button" onclick={handleAddProfile}>{t.profileSettings.addButton}</button>
 			</div>
 		</div>
-		{/if}
 	</div>
 </div>
+
+{#if showHelp}
+	<HelpOverlay onclose={() => (showHelp = false)} />
+{/if}
 
 <style>
 	.backdrop {
@@ -343,19 +316,12 @@
 		margin-bottom: 0.75rem;
 	}
 
-	.header-title {
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-	}
-
 	.header h2 {
 		margin: 0;
 		font-size: 1.1rem;
 	}
 
-	.close,
-	.back {
+	.close {
 		border: none;
 		background: transparent;
 		color: #f2f8ff;
@@ -363,30 +329,6 @@
 		line-height: 1;
 		cursor: pointer;
 		padding: 0.25rem;
-	}
-
-	table {
-		width: 100%;
-		border-collapse: collapse;
-		font-size: 0.9rem;
-		margin-bottom: 0.75rem;
-	}
-
-	th,
-	td {
-		text-align: left;
-		padding: 0.4rem 0.5rem;
-		border-bottom: 1px solid #546880;
-	}
-
-	code {
-		color: #8be9fd;
-	}
-
-	.help-hint {
-		margin: 0;
-		font-size: 0.8rem;
-		color: #a9bcd0;
 	}
 
 	.toolbar {
