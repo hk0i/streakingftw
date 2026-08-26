@@ -88,15 +88,15 @@
 		{/if}
 		<span class="stat">
 			<span class="stat-value">{displayTally.wins}W</span>
-			{#if profileTally}<span class="stat-total">/{tally.wins}</span>{/if}
+			{#if profileTally}<span class="stat-total">{tally.wins}</span>{/if}
 		</span>
 		<span class="stat">
 			<span class="stat-value">{displayTally.losses}L</span>
-			{#if profileTally}<span class="stat-total">/{tally.losses}</span>{/if}
+			{#if profileTally}<span class="stat-total">{tally.losses}</span>{/if}
 		</span>
 		<span class="stat">
 			<span class="stat-value">{displayTally.ties}T</span>
-			{#if profileTally}<span class="stat-total">/{tally.ties}</span>{/if}
+			{#if profileTally}<span class="stat-total">{tally.ties}</span>{/if}
 		</span>
 	</div>
 
@@ -180,9 +180,14 @@
 	}
 
 	.stat-total {
+		min-width: 1.5rem;
+		margin-top: 0.15rem;
+		padding-top: 0.1rem;
+		border-top: 1px solid #546880;
 		font-size: 0.75rem;
 		font-weight: 500;
 		color: #a9bcd0;
+		text-align: center;
 	}
 
 	.badges {
