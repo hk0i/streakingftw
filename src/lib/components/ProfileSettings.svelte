@@ -5,12 +5,16 @@
 		deleteProfile,
 		setProfileTemplateOverride,
 		setProfileIcons,
-		type Profile
+		setTemplate,
+		type Profile,
+		type Tally
 	} from '$lib/tally';
+	import { toTokens, render } from '$lib/template';
 	import { ICON_PACKS } from '$lib/icon-packs';
 	import CopyUrlButton from '$lib/components/CopyUrlButton.svelte';
 	import IconPackPicker from '$lib/components/IconPackPicker.svelte';
 	import LanguageToggle from '$lib/components/LanguageToggle.svelte';
+	import HelpOverlay from '$lib/components/HelpOverlay.svelte';
 	import { getT } from '$lib/i18n/locale.svelte';
 
 	let t = $derived(getT());
@@ -20,12 +24,14 @@
 	let {
 		profiles,
 		template,
+		tally,
 		activeProfileId,
 		onclose,
 		onchange
 	}: {
 		profiles: Profile[];
 		template: string;
+		tally: Tally;
 		activeProfileId: string | null;
 		onclose: () => void;
 		onchange: () => void;
@@ -36,6 +42,8 @@
 	let customFormatEnabled = $state<Record<string, boolean>>({});
 	let profileTemplateDrafts = $state<Record<string, string>>({});
 	let selectedIds = $state<Set<string>>(new Set());
+	let templateDraft = $state('');
+	let showHelp = $state(false);
 
 	function scrollIntoViewIfActive(node: HTMLElement, isActive: boolean) {
 		if (isActive) node.scrollIntoView({ block: 'nearest' });
@@ -52,7 +60,19 @@
 		profileTemplateDrafts = Object.fromEntries(
 			profiles.filter((p) => p.template !== undefined).map((p) => [p.id, p.template as string])
 		);
+		templateDraft = template;
 	});
+
+	let preview = $derived(render(templateDraft, toTokens(tally)));
+
+	function commitTemplate() {
+		setTemplate(templateDraft);
+		onchange();
+	}
+
+	function handleTemplateKeydown(event: KeyboardEvent) {
+		if (event.key === 'Enter') (event.target as HTMLInputElement).blur();
+	}
 
 	function handleAddProfile() {
 		addProfile(newProfileName);
@@ -116,7 +136,12 @@
 	}
 
 	function handleKeydown(event: KeyboardEvent) {
-		if (event.key === 'Escape') onclose();
+		if (event.key !== 'Escape') return;
+		if (showHelp) {
+			showHelp = false;
+		} else {
+			onclose();
+		}
 	}
 
 	function handleBackdropClick(event: MouseEvent) {
@@ -136,6 +161,27 @@
 		<div class="toolbar">
 			<CopyUrlButton profileIds={[]} label={t.dock.copyUrl} />
 			<LanguageToggle />
+		</div>
+		<div class="format">
+			<div class="format-row">
+				<label for="template">{t.dock.overlayFormatLabel}</label>
+				<button
+					type="button"
+					class="help-btn"
+					aria-label={t.dock.templateHelpAriaLabel}
+					onclick={() => (showHelp = true)}
+				>
+					?
+				</button>
+			</div>
+			<input
+				id="template"
+				type="text"
+				bind:value={templateDraft}
+				onblur={commitTemplate}
+				onkeydown={handleTemplateKeydown}
+			/>
+			<span class="preview">{preview}</span>
 		</div>
 		<div class="profiles">
 			<div
@@ -241,6 +287,10 @@
 	</div>
 </div>
 
+{#if showHelp}
+	<HelpOverlay onclose={() => (showHelp = false)} />
+{/if}
+
 <style>
 	.backdrop {
 		position: fixed;
@@ -296,6 +346,52 @@
 		justify-content: space-between;
 		gap: 0.5rem;
 		margin-bottom: 0.75rem;
+	}
+
+	.format {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		margin-bottom: 0.75rem;
+	}
+
+	.format-row {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.format label {
+		font-size: 0.875rem;
+		color: #f2f8ff;
+	}
+
+	.help-btn {
+		width: 1.5rem;
+		height: 1.5rem;
+		border-radius: 50%;
+		border: 1px solid #546880;
+		background: #232b36;
+		color: #f2f8ff;
+		font-size: 0.875rem;
+		line-height: 1;
+		cursor: pointer;
+		padding: 0;
+	}
+
+	.format input {
+		min-height: 44px;
+		padding: 0 0.75rem;
+		font-size: 1rem;
+		border-radius: 0.5rem;
+		border: 1px solid #546880;
+		background: #232b36;
+		color: #f2f8ff;
+	}
+
+	.format .preview {
+		font-size: 0.875rem;
+		color: #a9bcd0;
 	}
 
 	.profiles {

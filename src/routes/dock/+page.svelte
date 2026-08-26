@@ -6,15 +6,12 @@
 		addResult,
 		undo,
 		newSession,
-		setTemplate,
 		setActiveProfile,
 		type Tally,
 		type Profile,
 		type Result
 	} from '$lib/tally';
-	import { toTokens, render } from '$lib/template';
 	import { resolveProfileIcons } from '$lib/icon-packs';
-	import HelpOverlay from '$lib/components/HelpOverlay.svelte';
 	import ProfileSettings from '$lib/components/ProfileSettings.svelte';
 	import { getT, initLocale } from '$lib/i18n/locale.svelte';
 
@@ -22,7 +19,6 @@
 
 	let tally = $state<Tally>({ wins: 0, losses: 0, ties: 0, total: 0 });
 	let templateDraft = $state('');
-	let showHelp = $state(false);
 	let showProfileSettings = $state(false);
 	let profiles = $state<Profile[]>([]);
 	let results = $state<Result[]>([]);
@@ -55,16 +51,6 @@
 	function handleProfileSelectChange(event: Event) {
 		const value = (event.target as HTMLSelectElement).value;
 		handleSetActiveProfile(value === '' ? null : value);
-	}
-
-	let preview = $derived(render(templateDraft, toTokens(tally)));
-
-	function commitTemplate() {
-		setTemplate(templateDraft);
-	}
-
-	function handleTemplateKeydown(event: KeyboardEvent) {
-		if (event.key === 'Enter') (event.target as HTMLInputElement).blur();
 	}
 
 	onMount(() => {
@@ -139,38 +125,14 @@
 		<button onclick={handleNewSession}>{t.dock.newSession}</button>
 	</div>
 
-	<div class="format">
-		<div class="format-row">
-			<label for="template">{t.dock.overlayFormatLabel}</label>
-			<button
-				type="button"
-				class="help-btn"
-				aria-label={t.dock.templateHelpAriaLabel}
-				onclick={() => (showHelp = true)}
-			>
-				?
-			</button>
-		</div>
-		<input
-			id="template"
-			type="text"
-			bind:value={templateDraft}
-			onblur={commitTemplate}
-			onkeydown={handleTemplateKeydown}
-		/>
-		<span class="preview">{preview}</span>
-	</div>
 
 </main>
-
-{#if showHelp}
-	<HelpOverlay onclose={() => (showHelp = false)} />
-{/if}
 
 {#if showProfileSettings}
 	<ProfileSettings
 		{profiles}
 		template={templateDraft}
+		{tally}
 		{activeProfileId}
 		onclose={() => (showProfileSettings = false)}
 		onchange={refresh}
@@ -297,51 +259,6 @@
 
 	.controls button:disabled {
 		opacity: 0.5;
-	}
-
-	.format {
-		display: flex;
-		flex-direction: column;
-		gap: 0.5rem;
-	}
-
-	.format-row {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-	}
-
-	.format label {
-		font-size: 0.875rem;
-		color: #f2f8ff;
-	}
-
-	.help-btn {
-		width: 1.5rem;
-		height: 1.5rem;
-		border-radius: 50%;
-		border: 1px solid #546880;
-		background: #232b36;
-		color: #f2f8ff;
-		font-size: 0.875rem;
-		line-height: 1;
-		cursor: pointer;
-		padding: 0;
-	}
-
-	.format input {
-		min-height: 44px;
-		padding: 0 0.75rem;
-		font-size: 1rem;
-		border-radius: 0.5rem;
-		border: 1px solid #546880;
-		background: #232b36;
-		color: #f2f8ff;
-	}
-
-	.format .preview {
-		font-size: 0.875rem;
-		color: #a9bcd0;
 	}
 
 	@media (min-width: 480px) {
