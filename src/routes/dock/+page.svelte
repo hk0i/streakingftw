@@ -292,7 +292,7 @@
 	}
 
 	.win {
-		background: #73d216;
+		background: #48830e;
 	}
 
 	.loss {
@@ -300,7 +300,7 @@
 	}
 
 	.tie {
-		background: #f57900;
+		background: #b95b00;
 	}
 
 	.controls {
