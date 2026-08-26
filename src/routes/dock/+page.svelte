@@ -16,8 +16,6 @@
 	import { resolveProfileIcons } from '$lib/icon-packs';
 	import HelpOverlay from '$lib/components/HelpOverlay.svelte';
 	import ProfileSettings from '$lib/components/ProfileSettings.svelte';
-	import CopyUrlButton from '$lib/components/CopyUrlButton.svelte';
-	import LanguageToggle from '$lib/components/LanguageToggle.svelte';
 	import { getT, initLocale } from '$lib/i18n/locale.svelte';
 
 	let t = $derived(getT());
@@ -117,8 +115,6 @@
 				{/each}
 			</select>
 		{/if}
-		<CopyUrlButton profileIds={[]} label={t.dock.copyUrl} />
-		<LanguageToggle />
 	</div>
 
 	{#if profileTally}

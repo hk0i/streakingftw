@@ -10,6 +10,7 @@
 	import { ICON_PACKS } from '$lib/icon-packs';
 	import CopyUrlButton from '$lib/components/CopyUrlButton.svelte';
 	import IconPackPicker from '$lib/components/IconPackPicker.svelte';
+	import LanguageToggle from '$lib/components/LanguageToggle.svelte';
 	import { getT } from '$lib/i18n/locale.svelte';
 
 	let t = $derived(getT());
@@ -131,6 +132,10 @@
 		<div class="header">
 			<h2>{t.profileSettings.heading}</h2>
 			<button type="button" class="close" onclick={onclose} aria-label={t.profileSettings.closeAriaLabel}>×</button>
+		</div>
+		<div class="toolbar">
+			<CopyUrlButton profileIds={[]} label={t.dock.copyUrl} />
+			<LanguageToggle />
 		</div>
 		<div class="profiles">
 			<div
@@ -283,6 +288,14 @@
 		line-height: 1;
 		cursor: pointer;
 		padding: 0.25rem;
+	}
+
+	.toolbar {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.5rem;
+		margin-bottom: 0.75rem;
 	}
 
 	.profiles {
