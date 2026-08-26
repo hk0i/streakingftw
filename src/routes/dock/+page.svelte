@@ -53,6 +53,11 @@
 		refresh();
 	}
 
+	function handleProfileSelectChange(event: Event) {
+		const value = (event.target as HTMLSelectElement).value;
+		handleSetActiveProfile(value === '' ? null : value);
+	}
+
 	let preview = $derived(render(templateDraft, toTokens(tally)));
 
 	function commitTemplate() {
@@ -101,24 +106,16 @@
 			⚙
 		</button>
 		{#if profiles.length > 0}
-			<button
-				type="button"
-				class="chip"
-				class:active={activeProfileId === null}
-				onclick={() => handleSetActiveProfile(null)}
+			<select
+				class="profile-select"
+				value={activeProfileId ?? ''}
+				onchange={handleProfileSelectChange}
 			>
-				{t.dock.generic}
-			</button>
-			{#each profiles as profile (profile.id)}
-				<button
-					type="button"
-					class="chip"
-					class:active={activeProfileId === profile.id}
-					onclick={() => handleSetActiveProfile(profile.id)}
-				>
-					{profile.name}
-				</button>
-			{/each}
+				<option value="">{t.dock.generic}</option>
+				{#each profiles as profile (profile.id)}
+					<option value={profile.id}>{profile.name}</option>
+				{/each}
+			</select>
 		{/if}
 		<CopyUrlButton profileIds={[]} label={t.dock.copyUrl} />
 		<LanguageToggle />
@@ -246,21 +243,15 @@
 		gap: 0.5rem;
 	}
 
-	.chip {
+	.profile-select {
 		min-height: 36px;
-		padding: 0 0.75rem;
+		padding: 0 0.5rem;
 		font-size: 0.875rem;
 		font-weight: 600;
-		border-radius: 999px;
+		border-radius: 0.5rem;
 		border: 1px solid #546880;
 		background: #232b36;
 		color: #f2f8ff;
-	}
-
-	.chip.active {
-		background: #fcaf3e;
-		border-color: #fcaf3e;
-		color: #12161c;
 	}
 
 	.settings-btn {
