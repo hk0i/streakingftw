@@ -1,7 +1,10 @@
 <script lang="ts">
 	import { TOKEN_REFERENCE } from '$lib/template';
+	import { getT } from '$lib/i18n/locale.svelte';
 
 	let { onclose }: { onclose: () => void } = $props();
+
+	let t = $derived(getT());
 
 	function handleKeydown(event: KeyboardEvent) {
 		if (event.key === 'Escape') onclose();
@@ -16,16 +19,16 @@
 
 <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
 <div class="backdrop" onclick={handleBackdropClick}>
-	<div class="panel" role="dialog" aria-modal="true" aria-label="Template tokens">
+	<div class="panel" role="dialog" aria-modal="true" aria-label={t.helpOverlay.heading}>
 		<div class="header">
-			<h2>Template tokens</h2>
-			<button type="button" class="close" onclick={onclose} aria-label="Close">×</button>
+			<h2>{t.helpOverlay.heading}</h2>
+			<button type="button" class="close" onclick={onclose} aria-label={t.helpOverlay.closeAriaLabel}>×</button>
 		</div>
 		<table>
 			<thead>
 				<tr>
-					<th>Token</th>
-					<th>Meaning</th>
+					<th>{t.helpOverlay.tokenColumn}</th>
+					<th>{t.helpOverlay.meaningColumn}</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -37,7 +40,7 @@
 				{/each}
 			</tbody>
 		</table>
-		<p class="hint">Unrecognized tokens are shown as-is, so typos are safe.</p>
+		<p class="hint">{t.helpOverlay.hint}</p>
 	</div>
 </div>
 

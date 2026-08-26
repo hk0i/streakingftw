@@ -1,10 +1,13 @@
 <script lang="ts">
 	import { buildOverlayUrl } from '$lib/tally';
 	import { copyToClipboard } from '$lib/clipboard';
+	import { getT } from '$lib/i18n/locale.svelte';
+
+	let t = $derived(getT());
 
 	let {
 		profileIds,
-		label = 'Copy overlay URL',
+		label = t.copyUrlButton.defaultLabel,
 		disabled = false
 	}: { profileIds: string[]; label?: string; disabled?: boolean } = $props();
 
@@ -33,11 +36,11 @@
 </script>
 
 <button type="button" {disabled} onclick={handleClick}>
-	{copied ? 'Copied!' : label}
+	{copied ? t.copyUrlButton.copied : label}
 </button>
 {#if manualUrl}
 	<div class="manual-copy">
-		<label for={`manual-copy-${uid}`}>Clipboard unavailable — copy manually:</label>
+		<label for={`manual-copy-${uid}`}>{t.copyUrlButton.clipboardUnavailable}</label>
 		<input id={`manual-copy-${uid}`} type="text" readonly value={manualUrl} bind:this={manualInput} />
 	</div>
 {/if}

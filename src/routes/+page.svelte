@@ -4,11 +4,16 @@
 	import obsScreenshot from '$lib/assets/screenshots/obs-streaking-ftw.png?enhanced';
 	import addDockScreenshot from '$lib/assets/screenshots/add-obs-dock.png?enhanced';
 	import addSourceScreenshot from '$lib/assets/screenshots/add-obs-source.png?enhanced';
+	import { getLocale, getT, initLocale } from '$lib/i18n/locale.svelte';
+	import LanguageToggle from '$lib/components/LanguageToggle.svelte';
+
+	let t = $derived(getT());
 
 	let origin = $state('');
 
 	onMount(() => {
 		origin = window.location.origin;
+		initLocale();
 	});
 
 	const dockUrl = $derived(`${origin}${resolve('/dock')}`);
@@ -17,77 +22,54 @@
 
 <div class="backdrop">
 <div class="page">
-	<h1>streakingftw</h1>
-	<enhanced:img src={obsScreenshot} alt="OBS scene running StreakingFTW, with the dock and overlay in place" />
-	<p>
-		StreakingFTW Win Tracker is a simple win/loss/tie tally tracker.<br>
-		StreakingFTW, or "Streaking" for short, plugs into your OBS in two places:
-	</p>
+	<div class="lang-row"><LanguageToggle /></div>
+	<h1>{t.landing.title}</h1>
+	<enhanced:img src={obsScreenshot} alt={t.landing.heroImgAlt} />
+	<p>{@html t.landing.introText}</p>
 	<ol>
-		<li>The <strong>Dock</strong> — A control panel with buttons to click (Win, Loss, Tie, Undo, New Session) for the streamer to interact with.</li>
-		<li>The <strong>Overlay</strong> — A transparent overlay that shows the current tally to viewers. It updates instantly when the dock is used.</li>
+		<li>{@html t.landing.introDockItem}</li>
+		<li>{@html t.landing.introOverlayItem}</li>
 	</ol>
 
-	<h2>Setup</h2>
+	<h2>{t.landing.setupHeading}</h2>
 	<ol>
 		<li>
-			In <strong>OBS Sources</strong>, add a <strong>Browser Source</strong>.
-			<enhanced:img src={addDockScreenshot} alt="Adding a Browser Source in OBS for the StreakingFTW dock" />
+			{@html t.landing.setupStep1}
+			<enhanced:img src={addDockScreenshot} alt={t.landing.addDockImgAlt} />
 			<ol>
-				<li>Set <strong>URL</strong> to <a href={dockUrl}>{dockUrl}</a><br>
-				<em>(right-click the link and "Copy Link" to grab it.)</em></li>
+				<li>{@html t.landing.urlLabel} <a href={dockUrl}>{dockUrl}</a><br>
+				<em>{t.landing.copyLinkHint}</em></li>
 			</ol>
 		</li>
 		<li>
-			Add a second <strong>Browser Source</strong>
-			<enhanced:img src={addSourceScreenshot} alt="Adding a Browser Source in OBS for the StreakingFTW overlay" />
+			{@html t.landing.setupStep2}
+			<enhanced:img src={addSourceScreenshot} alt={t.landing.addSourceImgAlt} />
 			<ol>
-				<li>Set <strong>URL</strong> to <a href={overlayUrl}>{overlayUrl}</a><br>
-				<em>(right-click the link and "Copy Link" to grab it.)</em></li>
-				<li>Place it in your scene wherever you want the tally shown to viewers.</li>
+				<li>{@html t.landing.urlLabel} <a href={overlayUrl}>{overlayUrl}</a><br>
+				<em>{t.landing.copyLinkHint}</em></li>
+				<li>{t.landing.placeOverlayItem}</li>
 			</ol>
 		</li>
 	</ol>
 
-	<p>
-		<strong>Note:</strong>
-		To size the overlay: OBS Browser Sources default to an 800×600 canvas, much bigger than one
-		line of tally text — that's the empty space around the edges. Right-click the source →
-		<strong>Properties</strong>, and set <strong>Width</strong> and <strong>Height</strong> there
-		to something closer to the content, e.g. <code>600×150</code> for a single line. <strong>DO NOT</strong> resize
-		using the on-canvas drag handles instead — that stretches the already-rendered image and it will look
-		blurry.
-	</p>
+	<p>{@html t.landing.sizingNote}</p>
 
-	<h2>3. Track wins, losses, and ties</h2>
-	<p>
-		Open the <strong>Dock Panel</strong> whenever you want to log a result, undo the
-		last one, or start a new session. The overlay updates instantly since it's reading the same
-		local storage session.
-	</p>
-	<p>Use the <strong>New Session</strong> button to start a fresh tally for your gaming session. This will keep a clear tally of the wins/losses/ties for the day/time you started playing</p>
+	<h2>{t.landing.trackHeading}</h2>
+	<p>{@html t.landing.trackP1}</p>
+	<p>{@html t.landing.trackP2}</p>
 
-	<h2>4. Add rank & role badges (optional)</h2>
-	<p>
-		If you're using <strong>profiles</strong> to track separate stats per role or game mode,
-		each profile can also show a game-specific badge. Today there's one bundled pack —
-		<strong>Overwatch</strong> (role icons and rank tier badges, Bronze through Champion).
-	</p>
+	<h2>{t.landing.badgesHeading}</h2>
+	<p>{@html t.landing.badgesP1}</p>
 	<ol>
-		<li>Open the Dock and click the gear icon to open <strong>Profile settings</strong>.</li>
-		<li>
-			Under a profile's <strong>Badge</strong> row, click a role icon and/or a rank badge to
-			select it — click a selected one again to clear it.
-		</li>
-		<li>
-			The badge shows next to that profile's tally in the Dock, and on the Overlay next to
-			that profile's text.
-		</li>
+		<li>{@html t.landing.badgesStep1}</li>
+		<li>{@html t.landing.badgesStep2}</li>
+		<li>{t.landing.badgesStep3}</li>
 	</ol>
-	<p>
-		To show the rank as text too, add <code>{'{rank}'}</code> to that profile's custom output
-		format, e.g. <code>{'{profile_name} ({rank}) {wins}W {losses}L {ties}T'}</code>.
-	</p>
+	<p>{@html t.landing.badgesFormatP}</p>
+
+	{#if getLocale() !== 'en'}
+		<p class="translation-feedback">{@html t.landing.translationFeedback}</p>
+	{/if}
 </div>
 </div>
 
@@ -106,6 +88,12 @@
 		line-height: 1.6;
 	}
 
+	.lang-row {
+		display: flex;
+		justify-content: flex-end;
+		margin-bottom: 1rem;
+	}
+
 	h1 {
 		margin: 0 0 0.5rem;
 	}
@@ -119,12 +107,17 @@
 		margin: 0 0 1rem;
 	}
 
-	a {
+	.page :global(a) {
 		color: #73d216;
 		word-break: break-all;
 	}
 
-	code {
+	.translation-feedback {
+		font-size: 0.8rem;
+		color: #a9bcd0;
+	}
+
+	.page :global(code) {
 		background: #232b36;
 		padding: 0.1em 0.4em;
 		border-radius: 0.25em;

@@ -10,6 +10,9 @@
 	import { ICON_PACKS } from '$lib/icon-packs';
 	import CopyUrlButton from '$lib/components/CopyUrlButton.svelte';
 	import IconPackPicker from '$lib/components/IconPackPicker.svelte';
+	import { getT } from '$lib/i18n/locale.svelte';
+
+	let t = $derived(getT());
 
 	const iconPack = ICON_PACKS[0];
 
@@ -124,10 +127,10 @@
 
 <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
 <div class="backdrop" onclick={handleBackdropClick}>
-	<div class="panel" role="dialog" aria-modal="true" aria-label="Profile settings">
+	<div class="panel" role="dialog" aria-modal="true" aria-label={t.profileSettings.heading}>
 		<div class="header">
-			<h2>Profile settings</h2>
-			<button type="button" class="close" onclick={onclose} aria-label="Close">×</button>
+			<h2>{t.profileSettings.heading}</h2>
+			<button type="button" class="close" onclick={onclose} aria-label={t.profileSettings.closeAriaLabel}>×</button>
 		</div>
 		<div class="profiles">
 			<div
@@ -141,7 +144,7 @@
 						checked={selectedIds.has('generic')}
 						onchange={(e) => toggleSelected('generic', e.currentTarget.checked)}
 					/>
-					Generic
+					{t.profileSettings.generic}
 				</label>
 				<CopyUrlButton profileIds={['generic']} />
 			</div>
@@ -161,10 +164,10 @@
 						<button
 							type="button"
 							class="delete-btn"
-							aria-label={`Delete ${profile.name}`}
+							aria-label={`${t.profileSettings.deletePrefix} ${profile.name}`}
 							onclick={() => handleDeleteProfile(profile.id)}
 						>
-							Delete
+							{t.profileSettings.deleteButton}
 						</button>
 					</div>
 					<div class="profile-format-row">
@@ -174,7 +177,7 @@
 								checked={customFormatEnabled[profile.id] ?? false}
 								onchange={(e) => handleToggleCustomFormat(profile, e.currentTarget.checked)}
 							/>
-							Custom format
+							{t.profileSettings.customFormat}
 						</label>
 						<input
 							type="text"
@@ -186,7 +189,7 @@
 						/>
 					</div>
 					<div class="profile-icons-row">
-						<span class="checkbox-label">Badge</span>
+						<span class="checkbox-label">{t.profileSettings.badge}</span>
 						<IconPackPicker
 							pack={iconPack}
 							roleId={profile.roleId}
@@ -201,7 +204,7 @@
 								checked={selectedIds.has(profile.id)}
 								onchange={(e) => toggleSelected(profile.id, e.currentTarget.checked)}
 							/>
-							Include in link
+							{t.profileSettings.includeInLink}
 						</label>
 						<CopyUrlButton profileIds={[profile.id]} />
 					</div>
@@ -210,25 +213,24 @@
 			<div class="url-row selected-url-row">
 				<CopyUrlButton
 					profileIds={Array.from(selectedIds)}
-					label="Copy URL for selected"
+					label={t.profileSettings.copyUrlSelected}
 					disabled={selectedIds.size === 0}
 				/>
 			</div>
 			<div class="header">
-				<h2>Add New Profile</h2>
+				<h2>{t.profileSettings.addProfileHeading}</h2>
 			</div>
 			<p class="hint">
-				Each profile keeps its own win/loss/tie tally and overlay link, separate from the
-				generic session — use one per game, or role (Tank, DPS, Support), or whatever makes sense for your stream.
+				{t.profileSettings.hint}
 			</p>
 			<div class="profile-add">
 				<input
 					type="text"
-					placeholder="New profile name"
+					placeholder={t.profileSettings.newProfilePlaceholder}
 					bind:value={newProfileName}
 					onkeydown={(e) => e.key === 'Enter' && handleAddProfile()}
 				/>
-				<button type="button" onclick={handleAddProfile}>Add</button>
+				<button type="button" onclick={handleAddProfile}>{t.profileSettings.addButton}</button>
 			</div>
 		</div>
 	</div>

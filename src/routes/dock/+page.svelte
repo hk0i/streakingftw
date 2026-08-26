@@ -17,6 +17,10 @@
 	import HelpOverlay from '$lib/components/HelpOverlay.svelte';
 	import ProfileSettings from '$lib/components/ProfileSettings.svelte';
 	import CopyUrlButton from '$lib/components/CopyUrlButton.svelte';
+	import LanguageToggle from '$lib/components/LanguageToggle.svelte';
+	import { getT, initLocale } from '$lib/i18n/locale.svelte';
+
+	let t = $derived(getT());
 
 	let tally = $state<Tally>({ wins: 0, losses: 0, ties: 0, total: 0 });
 	let templateDraft = $state('');
@@ -59,7 +63,10 @@
 		if (event.key === 'Enter') (event.target as HTMLInputElement).blur();
 	}
 
-	onMount(refresh);
+	onMount(() => {
+		refresh();
+		initLocale();
+	});
 
 	function handleResult(type: 'win' | 'loss' | 'tie') {
 		addResult(type);
@@ -88,7 +95,7 @@
 		<button
 			type="button"
 			class="settings-btn"
-			aria-label="Profile settings"
+			aria-label={t.dock.settingsAriaLabel}
 			onclick={() => (showProfileSettings = true)}
 		>
 			⚙
@@ -100,7 +107,7 @@
 				class:active={activeProfileId === null}
 				onclick={() => handleSetActiveProfile(null)}
 			>
-				Generic
+				{t.dock.generic}
 			</button>
 			{#each profiles as profile (profile.id)}
 				<button
@@ -113,7 +120,8 @@
 				</button>
 			{/each}
 		{/if}
-		<CopyUrlButton profileIds={[]} label="🔗 Copy URL" />
+		<CopyUrlButton profileIds={[]} label={t.dock.copyUrl} />
+		<LanguageToggle />
 	</div>
 
 	{#if profileTally}
@@ -135,23 +143,23 @@
 	{/if}
 
 	<div class="actions">
-		<button class="win" onclick={() => handleResult('win')}>Win</button>
-		<button class="loss" onclick={() => handleResult('loss')}>Loss</button>
-		<button class="tie" onclick={() => handleResult('tie')}>Tie</button>
+		<button class="win" onclick={() => handleResult('win')}>{t.dock.win}</button>
+		<button class="loss" onclick={() => handleResult('loss')}>{t.dock.loss}</button>
+		<button class="tie" onclick={() => handleResult('tie')}>{t.dock.tie}</button>
 	</div>
 
 	<div class="controls">
-		<button onclick={handleUndo} disabled={tally.total === 0}>Undo</button>
-		<button onclick={handleNewSession}>New Session</button>
+		<button onclick={handleUndo} disabled={tally.total === 0}>{t.dock.undo}</button>
+		<button onclick={handleNewSession}>{t.dock.newSession}</button>
 	</div>
 
 	<div class="format">
 		<div class="format-row">
-			<label for="template">Overlay format</label>
+			<label for="template">{t.dock.overlayFormatLabel}</label>
 			<button
 				type="button"
 				class="help-btn"
-				aria-label="Template token help"
+				aria-label={t.dock.templateHelpAriaLabel}
 				onclick={() => (showHelp = true)}
 			>
 				?
