@@ -45,6 +45,7 @@
 
 	let activeProfile = $derived(profiles.find((p) => p.id === activeProfileId) ?? null);
 	let activeIcons = $derived(activeProfile ? resolveProfileIcons(activeProfile) : {});
+	let displayTally = $derived(profileTally ?? tally);
 
 	function handleSetActiveProfile(id: string | null) {
 		setActiveProfile(id);
@@ -89,9 +90,19 @@
 
 <main>
 	<div class="tally">
-		<span>{tally.wins}W</span>
-		<span>{tally.losses}L</span>
-		<span>{tally.ties}T</span>
+		{#if activeIcons.role || activeIcons.rank}
+			<span class="badges">
+				{#if activeIcons.role}
+					<img class="badge role" src={activeIcons.role.src} alt={activeIcons.role.label} />
+				{/if}
+				{#if activeIcons.rank}
+					<img class="badge rank" src={activeIcons.rank.src} alt={activeIcons.rank.label} />
+				{/if}
+			</span>
+		{/if}
+		<span>{displayTally.wins}W</span>
+		<span>{displayTally.losses}L</span>
+		<span>{displayTally.ties}T</span>
 	</div>
 
 	<div class="switcher">
@@ -116,24 +127,6 @@
 			</select>
 		{/if}
 	</div>
-
-	{#if profileTally}
-		<div class="tally profile-tally">
-			{#if activeIcons.role || activeIcons.rank}
-				<span class="badges">
-					{#if activeIcons.role}
-						<img class="badge role" src={activeIcons.role.src} alt={activeIcons.role.label} />
-					{/if}
-					{#if activeIcons.rank}
-						<img class="badge rank" src={activeIcons.rank.src} alt={activeIcons.rank.label} />
-					{/if}
-				</span>
-			{/if}
-			<span>{profileTally.wins}W</span>
-			<span>{profileTally.losses}L</span>
-			<span>{profileTally.ties}T</span>
-		</div>
-	{/if}
 
 	<div class="actions">
 		<button class="win" onclick={() => handleResult('win')}>{t.dock.win}</button>
@@ -202,11 +195,6 @@
 		font-size: 1.5rem;
 		font-weight: 600;
 		color: #f2f8ff;
-	}
-
-	.profile-tally {
-		font-size: 1.1rem;
-		color: #a9bcd0;
 	}
 
 	.badges {
