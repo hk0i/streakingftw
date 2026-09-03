@@ -1,6 +1,7 @@
 import tank from '$lib/assets/icon-packs/overwatch/roles/tank.svg';
 import damage from '$lib/assets/icon-packs/overwatch/roles/damage.svg';
 import support from '$lib/assets/icon-packs/overwatch/roles/support.svg';
+import flex from '$lib/assets/icon-packs/overwatch/roles/flex.svg';
 
 import bronze from '$lib/assets/icon-packs/overwatch/ranks/bronze.webp';
 import silver from '$lib/assets/icon-packs/overwatch/ranks/silver.webp';
@@ -19,7 +20,8 @@ export const OVERWATCH_PACK: IconPack = {
 	roles: [
 		{ id: 'tank', label: 'Tank', src: tank },
 		{ id: 'damage', label: 'Damage', src: damage },
-		{ id: 'support', label: 'Support', src: support }
+		{ id: 'support', label: 'Support', src: support },
+		{ id: 'flex', label: 'Flex', src: flex }
 	],
 	ranks: [
 		{ id: 'bronze', label: 'Bronze', src: bronze },
