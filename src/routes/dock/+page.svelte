@@ -251,8 +251,8 @@
 	}
 
 	.actions button {
-		min-height: 64px;
-		font-size: 1.25rem;
+		min-height: clamp(36px, 12vh, 64px);
+		font-size: clamp(0.9rem, 4vh, 1.25rem);
 		font-weight: 600;
 		border: none;
 		border-radius: 0.5rem;
