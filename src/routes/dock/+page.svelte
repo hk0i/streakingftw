@@ -280,7 +280,7 @@
 
 	.controls button {
 		flex: 1;
-		min-height: 48px;
+		min-height: clamp(28px, 8vh, 48px);
 		font-size: 1rem;
 		border-radius: 0.5rem;
 		border: 1px solid #546880;
