@@ -157,7 +157,7 @@
 		min-height: 100vh;
 		box-sizing: border-box;
 		padding: clamp(0.5rem, 3.5vh, 1rem);
-		padding-bottom: clamp(0.3rem, 2vh, 0.6rem);
+		padding-bottom: 16px;
 		font-family: sans-serif;
 		background: #12161c;
 	}
