@@ -221,7 +221,7 @@
 	}
 
 	.profile-select {
-		min-height: 36px;
+		min-height: clamp(24px, 6vh, 36px);
 		padding: 0 0.5rem;
 		font-size: 0.875rem;
 		font-weight: 600;
@@ -232,8 +232,8 @@
 	}
 
 	.settings-btn {
-		width: 36px;
-		height: 36px;
+		width: clamp(24px, 6vh, 36px);
+		height: clamp(24px, 6vh, 36px);
 		border-radius: 50%;
 		border: 1px solid #546880;
 		background: #232b36;
