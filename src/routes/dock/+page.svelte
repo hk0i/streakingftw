@@ -152,10 +152,12 @@
 	main {
 		display: flex;
 		flex-direction: column;
+		justify-content: space-between;
 		gap: clamp(0.4rem, 3.5vh, 1rem);
 		min-height: 100vh;
 		box-sizing: border-box;
 		padding: clamp(0.5rem, 3.5vh, 1rem);
+		padding-bottom: clamp(0.3rem, 2vh, 0.6rem);
 		font-family: sans-serif;
 		background: #12161c;
 	}
