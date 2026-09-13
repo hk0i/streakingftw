@@ -152,10 +152,10 @@
 	main {
 		display: flex;
 		flex-direction: column;
-		gap: 1rem;
+		gap: clamp(0.4rem, 3.5vh, 1rem);
 		min-height: 100vh;
 		box-sizing: border-box;
-		padding: 1rem;
+		padding: clamp(0.5rem, 3.5vh, 1rem);
 		font-family: sans-serif;
 		background: #12161c;
 	}
@@ -221,7 +221,7 @@
 	}
 
 	.profile-select {
-		min-height: clamp(24px, 6vh, 36px);
+		min-height: clamp(24px, 8vh, 36px);
 		padding: 0 0.5rem;
 		font-size: 0.875rem;
 		font-weight: 600;
@@ -232,8 +232,8 @@
 	}
 
 	.settings-btn {
-		width: clamp(24px, 6vh, 36px);
-		height: clamp(24px, 6vh, 36px);
+		width: clamp(24px, 8vh, 36px);
+		height: clamp(24px, 8vh, 36px);
 		border-radius: 50%;
 		border: 1px solid #546880;
 		background: #232b36;
@@ -247,12 +247,12 @@
 	.actions {
 		display: grid;
 		grid-template-columns: 1fr;
-		gap: 0.75rem;
+		gap: clamp(0.35rem, 2.6vh, 0.75rem);
 	}
 
 	.actions button {
-		min-height: clamp(36px, 12vh, 64px);
-		font-size: clamp(0.9rem, 4vh, 1.25rem);
+		min-height: clamp(36px, 14vh, 64px);
+		font-size: clamp(0.9rem, 4.3vh, 1.25rem);
 		font-weight: 600;
 		border: none;
 		border-radius: 0.5rem;
@@ -275,12 +275,12 @@
 
 	.controls {
 		display: flex;
-		gap: 0.75rem;
+		gap: clamp(0.35rem, 2.6vh, 0.75rem);
 	}
 
 	.controls button {
 		flex: 1;
-		min-height: clamp(28px, 8vh, 48px);
+		min-height: clamp(28px, 10vh, 48px);
 		font-size: 1rem;
 		border-radius: 0.5rem;
 		border: 1px solid #546880;
