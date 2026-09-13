@@ -1,10 +1,11 @@
 import type { Profile } from '../tally';
 import type { IconOption, IconPack } from './types';
 import { OVERWATCH_PACK } from './overwatch';
+import { OVERWATCH_MODERN_PACK } from './overwatch-modern';
 
 export type { IconOption, IconPack };
 
-export const ICON_PACKS: IconPack[] = [OVERWATCH_PACK];
+export const ICON_PACKS: IconPack[] = [OVERWATCH_PACK, OVERWATCH_MODERN_PACK];
 
 export function getPack(id: string): IconPack | undefined {
 	return ICON_PACKS.find((pack) => pack.id === id);

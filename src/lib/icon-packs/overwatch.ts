@@ -16,7 +16,7 @@ import type { IconPack } from './types';
 
 export const OVERWATCH_PACK: IconPack = {
 	id: 'overwatch',
-	name: 'Overwatch',
+	name: 'Overwatch (Classic)',
 	roles: [
 		{ id: 'tank', label: 'Tank', src: tank },
 		{ id: 'damage', label: 'Damage', src: damage },

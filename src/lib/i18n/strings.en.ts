@@ -60,6 +60,7 @@ export const en = {
 		deleteButton: 'Delete',
 		customFormat: 'Custom format',
 		badge: 'Badge',
+		badgePack: 'Badge pack',
 		includeInLink: 'Include in link',
 		copyUrlSelected: 'Copy URL for selected',
 		addProfileHeading: 'Add New Profile',

@@ -10,7 +10,7 @@
 		type Tally
 	} from '$lib/tally';
 	import { toTokens, render } from '$lib/template';
-	import { ICON_PACKS } from '$lib/icon-packs';
+	import { ICON_PACKS, getPack } from '$lib/icon-packs';
 	import CopyUrlButton from '$lib/components/CopyUrlButton.svelte';
 	import IconPackPicker from '$lib/components/IconPackPicker.svelte';
 	import LanguageToggle from '$lib/components/LanguageToggle.svelte';
@@ -19,7 +19,9 @@
 
 	let t = $derived(getT());
 
-	const iconPack = ICON_PACKS[0];
+	function packForProfile(profile: Profile) {
+		return getPack(profile.iconPackId ?? '') ?? ICON_PACKS[0];
+	}
 
 	let {
 		profiles,
@@ -117,12 +119,21 @@
 		if (event.key === 'Enter') (event.target as HTMLInputElement).blur();
 	}
 
-	function handleIconsChange(profileId: string, patch: { roleId?: string; rankId?: string }) {
-		setProfileIcons(profileId, {
-			iconPackId: patch.roleId || patch.rankId ? iconPack.id : undefined,
+	function handleIconsChange(profile: Profile, patch: { roleId?: string; rankId?: string }) {
+		setProfileIcons(profile.id, {
+			iconPackId: patch.roleId || patch.rankId ? packForProfile(profile).id : undefined,
 			roleId: patch.roleId,
 			rankId: patch.rankId
 		});
+		onchange();
+	}
+
+	function handlePackChange(profile: Profile, packId: string) {
+		// Rank/role ids aren't guaranteed to line up between packs (e.g. the
+		// classic pack's "champion" has no equivalent in the modern one), so a
+		// pack switch clears the current selection rather than risk a badge
+		// that silently fails to resolve.
+		setProfileIcons(profile.id, { iconPackId: packId, roleId: undefined, rankId: undefined });
 		onchange();
 	}
 
@@ -241,11 +252,21 @@
 					</div>
 					<div class="profile-icons-row">
 						<span class="checkbox-label">{t.profileSettings.badge}</span>
+						<select
+							class="pack-select"
+							aria-label={t.profileSettings.badgePack}
+							value={packForProfile(profile).id}
+							onchange={(e) => handlePackChange(profile, e.currentTarget.value)}
+						>
+							{#each ICON_PACKS as pack (pack.id)}
+								<option value={pack.id}>{pack.name}</option>
+							{/each}
+						</select>
 						<IconPackPicker
-							pack={iconPack}
+							pack={packForProfile(profile)}
 							roleId={profile.roleId}
 							rankId={profile.rankId}
-							onchange={(patch) => handleIconsChange(profile.id, patch)}
+							onchange={(patch) => handleIconsChange(profile, patch)}
 						/>
 					</div>
 					<div class="url-row">
@@ -455,6 +476,16 @@
 		align-items: center;
 		gap: 0.5rem;
 		margin: -0.25rem 0 0.25rem;
+	}
+
+	.pack-select {
+		min-height: 32px;
+		padding: 0 0.5rem;
+		font-size: 0.8rem;
+		border-radius: 0.5rem;
+		border: 1px solid #546880;
+		background: #232b36;
+		color: #f2f8ff;
 	}
 
 	.checkbox-label {

@@ -58,6 +58,7 @@ export const ja = {
 		deleteButton: '削除',
 		customFormat: 'カスタム形式',
 		badge: 'バッジ',
+		badgePack: 'バッジパック',
 		includeInLink: 'リンクに含める',
 		copyUrlSelected: '選択項目のURLをコピー',
 		addProfileHeading: '新しいプロフィールを追加',
