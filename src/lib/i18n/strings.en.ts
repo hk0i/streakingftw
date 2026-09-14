@@ -41,7 +41,7 @@ export const en = {
 			'Use the <strong>New Session</strong> button to start a fresh tally for your gaming session. This will keep a clear tally of the wins/losses/ties for the day/time you started playing',
 		badgesHeading: '4. Add rank & role badges (optional)',
 		badgesP1:
-			"If you're using <strong>profiles</strong> to track separate stats per role or game mode, each profile can also show a game-specific badge. Today there are two bundled Overwatch packs — <strong>Classic</strong> (the original wing-style rank badges) and <strong>Current</strong> (today's in-game gem-style badges) — both covering role icons and all nine rank tiers, Bronze through Champion.",
+			"If you're using <strong>profiles</strong> to track separate stats per role or game mode, each profile can also show a game-specific badge. Today there are two bundled Overwatch packs — <strong>Overwatch</strong> (the wing-style rank badges, still what's live in-game today) and <strong>Overwatch 2</strong> (the gem-style badges from OW2's 2022 launch) — both covering role icons and all nine rank tiers, Bronze through Champion.",
 		badgesStep1: 'Open the Dock and click the gear icon to open <strong>Profile settings</strong>.',
 		badgesStep2:
 			"Under a profile's <strong>Badge</strong> row, pick a pack from the dropdown, then click a role icon and/or a rank badge to select it — click a selected one again to clear it.",

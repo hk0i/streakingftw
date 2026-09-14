@@ -15,9 +15,13 @@ import champion from '$lib/assets/icon-packs/overwatch/ranks/champion.webp';
 
 import type { IconPack } from './types';
 
+// The wing-style badge Blizzard has used since launch and still uses today —
+// this is the live, current style, not a legacy one. See OVERWATCH_2_PACK
+// (overwatch2.ts) for the separate, no-longer-current gem-style badges from
+// Overwatch 2's 2022 launch.
 export const OVERWATCH_PACK: IconPack = {
 	id: 'overwatch',
-	name: 'Overwatch (Classic)',
+	name: 'Overwatch',
 	roles: [
 		{ id: 'tank', label: 'Tank', src: tank },
 		{ id: 'damage', label: 'Damage', src: damage },
@@ -29,10 +33,11 @@ export const OVERWATCH_PACK: IconPack = {
 		{ id: 'silver', label: 'Silver', src: silver },
 		{ id: 'gold', label: 'Gold', src: gold },
 		{ id: 'platinum', label: 'Platinum', src: platinum },
-		// Emerald postdates this wing-badge style, so there's no classic art
-		// for it. Borrowing the modern gem badge here — rather than leaving
-		// the rank unselectable on this pack — means picking Classic doesn't
-		// cost a user their Emerald badge.
+		// No sourceable wing-style Emerald asset yet (it's a very new
+		// division). Borrowing the Overwatch 2 pack's gem-style Emerald here
+		// — rather than leaving the rank unselectable — means this pack
+		// doesn't cost a user their Emerald badge while a matching wing badge
+		// is unavailable. Swap for a real wing-style asset if one turns up.
 		{ id: 'emerald', label: 'Emerald', src: emerald },
 		{ id: 'diamond', label: 'Diamond', src: diamond },
 		{ id: 'master', label: 'Master', src: master },
